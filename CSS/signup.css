@@ -24,14 +24,14 @@ body {
 .login-form {
   background: #171b22;
   padding: 2rem;
-  border-radius: 1.5rem;
+  border-radius: 1.0rem;
   box-shadow: 0 0 24px #59e67c33, 0 0 8px #59e67c99;
   border: 2px solid #23272f;
   min-width: 330px;
 }
 .login-form h2 {
   color: #bbeebb;
-  text-shadow: 0 0 7px #67ff85;
+  text-shadow: 0 0 5px #67ff85;
   margin-bottom: 1.2rem;
 }
 .login-form label {
