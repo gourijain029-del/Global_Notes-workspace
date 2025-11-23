@@ -1,4 +1,13 @@
 import { getNotes, setNotes, getActiveUser, clearActiveUser } from "./storage.js";
+import { fetchSampleNotes } from "./apiClient.js";
+
+const TAG_COLORS = {
+  work: "#6aa6ff",
+  personal: "#ff85a1",
+  ideas: "#faca6b",
+  todo: "#88ffc3",
+  remote: "#b084ff",
+};
 
 let notes = [];
 let activeNoteId = null;
@@ -6,6 +15,11 @@ let activeUser = null;
 
 const $ = (selector) => document.querySelector(selector);
 const $all = (selector) => Array.from(document.querySelectorAll(selector));
+
+function getTagColor(tag) {
+  if (!tag) return "#0f1526";
+  return TAG_COLORS[tag.toLowerCase()] || "#4f6b95";
+}
 
 function createNote(partial = {}) {
   const now = new Date().toISOString();
@@ -23,25 +37,36 @@ function persistNotes() {
   setNotes(activeUser, notes);
 }
 
-function ensureAtLeastOneNote() {
+async function ensureAtLeastOneNote() {
   if (!notes.length) {
-    const initial = createNote({
-      title: "Welcome to Notes Workspace",
-      content:
-        "This is your first note. Use the sidebar to switch notes, add tags above, and search from the top bar.\n\nYour notes are saved locally in this browser.",
-      tags: ["ideas"],
-    });
-    notes.push(initial);
-    activeNoteId = initial.id;
+    const remote = await fetchSampleNotes();
+    if (remote.length) {
+      notes = remote.map((item) =>
+        createNote({
+          title: item.title,
+          content: item.body,
+          tags: ["remote"],
+        })
+      );
+    } else {
+      const initial = createNote({
+        title: "Welcome to Notes Workspace",
+        content:
+          "This is your first note. Use the sidebar to switch notes, add tags above, and search from the top bar.\n\nYour notes are saved locally in this browser.",
+        tags: ["ideas"],
+      });
+      notes.push(initial);
+    }
+    activeNoteId = notes[0].id;
     persistNotes();
   } else if (!activeNoteId) {
     activeNoteId = notes[0].id;
   }
 }
 
-function loadNotesForCurrentUser() {
+async function loadNotesForCurrentUser() {
   notes = getNotes(activeUser);
-  ensureAtLeastOneNote();
+  await ensureAtLeastOneNote();
 }
 
 function updateUserDisplay() {
@@ -148,9 +173,10 @@ function renderNotesList() {
     const btn = document.createElement("button");
     btn.className = "note-card";
 
+    const plainContent = (note.content || "").replace(/<[^>]*>/g, "");
     const previewText =
-      note.content && note.content.trim().length > 0
-        ? note.content.trim().slice(0, 120) + (note.content.trim().length > 120 ? "…" : "")
+      plainContent && plainContent.trim().length > 0
+        ? plainContent.trim().slice(0, 120) + (plainContent.trim().length > 120 ? "…" : "")
         : "Empty note";
 
     btn.innerHTML = `
@@ -163,7 +189,9 @@ function renderNotesList() {
       <p class="note-preview">${previewText}</p>
       <div class="tag-row">
         ${(note.tags || [])
-          .map((t) => `<span class="tag">${t}</span>`)
+          .map(
+            (t) => `<span class="tag" style="--tag-color:${getTagColor(t)}">${t}</span>`
+          )
           .join("")}
       </div>
     `;
@@ -191,15 +219,16 @@ function renderActiveNote() {
   }
 
   if (titleInput) titleInput.value = note.title || "";
-  if (contentInput) contentInput.value = note.content || "";
+  if (contentInput) contentInput.innerHTML = note.content || "";
 
   if (tagsContainer) {
     tagsContainer.innerHTML = "";
     (note.tags || []).forEach((tag) => {
       const chip = document.createElement("button");
-      chip.className = "chip small";
+      chip.className = "chip small tag-chip";
       chip.textContent = tag;
       chip.type = "button";
+      chip.style.setProperty("--tag-color", getTagColor(tag));
       chip.addEventListener("click", () => removeTagFromActiveNote(tag));
       tagsContainer.appendChild(chip);
     });
@@ -253,7 +282,7 @@ function handleSaveNote() {
   const titleInput = $("#title");
   const contentInput = $("#content");
   note.title = titleInput ? titleInput.value.trim() : "";
-  note.content = contentInput ? contentInput.value : "";
+  note.content = contentInput ? contentInput.innerHTML : "";
   note.tags = readTagsFromUI();
   note.updatedAt = new Date().toISOString();
   persistNotes();
@@ -345,6 +374,24 @@ function wireCrudButtons() {
   $("#duplicate-note")?.addEventListener("click", handleDuplicateNote);
 }
 
+function wireFormattingToolbar() {
+  const contentEl = $("#content");
+  if (!contentEl) return;
+
+  function applyFormat(command) {
+    contentEl.focus();
+    try {
+      document.execCommand(command, false, null);
+    } catch (e) {
+      console.error("Formatting command failed", command, e);
+    }
+  }
+
+  $("#format-bold")?.addEventListener("click", () => applyFormat("bold"));
+  $("#format-underline")?.addEventListener("click", () => applyFormat("underline"));
+  $("#format-bullet")?.addEventListener("click", () => applyFormat("insertUnorderedList"));
+}
+
 function wireAuthButtons() {
   $("#login")?.addEventListener("click", () => {
     window.location.href = "./signup.html";
@@ -364,41 +411,158 @@ function wireAuthButtons() {
   });
 }
 
+function formatNotesAsText() {
+  if (!Array.isArray(notes) || notes.length === 0) {
+    return "(No notes to export)";
+  }
+
+  return notes
+    .map((note, index) => {
+      const title = note.title || "Untitled note";
+      const tags = (note.tags || []).join(", ") || "none";
+      const created = note.createdAt || "";
+      const updated = note.updatedAt || "";
+      const content = note.content || "";
+
+      const lines = [
+        `=== NOTE ${index + 1} ===`,
+        `Title: ${title}`,
+        `Tags: ${tags}`,
+      ];
+
+      if (created) lines.push(`Created: ${created}`);
+      if (updated) lines.push(`Updated: ${updated}`);
+
+      lines.push("", "Content:");
+      lines.push(content || "(empty)");
+      lines.push("", "=== END NOTE " + (index + 1) + " ===", "");
+
+      return lines.join("\n");
+    })
+    .join("\n");
+}
+
 function exportNotes() {
-  const blob = new Blob([JSON.stringify(notes, null, 2)], { type: "application/json" });
+  const text = formatNotesAsText();
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "notes-backup.json";
+  a.download = "notes-backup.txt";
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
 }
 
+function parseNotesFromTextFormat(text) {
+  if (!text || typeof text !== "string") return [];
+
+  const lines = text.split(/\r?\n/);
+  const result = [];
+  let current = null;
+  let collectingContent = false;
+  let contentLines = [];
+
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd();
+
+    if (line.startsWith("=== NOTE")) {
+      current = { title: "", content: "", tags: [], createdAt: "", updatedAt: "" };
+      collectingContent = false;
+      contentLines = [];
+      continue;
+    }
+
+    if (!current) {
+      continue;
+    }
+
+    if (line.startsWith("=== END NOTE")) {
+      current.content = contentLines.join("\n");
+      if (!current.title && !current.content && (!current.tags || !current.tags.length)) {
+        current = null;
+        collectingContent = false;
+        contentLines = [];
+        continue;
+      }
+      result.push(current);
+      current = null;
+      collectingContent = false;
+      contentLines = [];
+      continue;
+    }
+
+    if (collectingContent) {
+      contentLines.push(rawLine);
+      continue;
+    }
+
+    if (line.toLowerCase().startsWith("title:")) {
+      current.title = line.slice("title:".length).trim();
+    } else if (line.toLowerCase().startsWith("tags:")) {
+      const tagPart = line.slice("tags:".length).trim();
+      current.tags = tagPart
+        ? tagPart.split(",").map((t) => t.trim()).filter(Boolean)
+        : [];
+    } else if (line.toLowerCase().startsWith("created:")) {
+      current.createdAt = line.slice("created:".length).trim();
+    } else if (line.toLowerCase().startsWith("updated:")) {
+      current.updatedAt = line.slice("updated:".length).trim();
+    } else if (line === "Content:") {
+      collectingContent = true;
+      contentLines = [];
+    }
+  }
+
+  return result;
+}
+
 function importNotesFromFile(file) {
   const reader = new FileReader();
   reader.onload = () => {
+    const text = String(reader.result || "");
+
+    // First try JSON (backward compatible with existing exports)
     try {
-      const parsed = JSON.parse(reader.result);
-      if (!Array.isArray(parsed)) {
-        alert("Import failed: expected an array of notes.");
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed)) {
+        notes = parsed.map((n) =>
+          createNote({
+            ...n,
+            id: n.id || undefined,
+          })
+        );
+        activeNoteId = notes[0] ? notes[0].id : null;
+        persistNotes();
+        renderNotesList();
+        renderActiveNote();
         return;
       }
-      notes = parsed.map((n) =>
-        createNote({
-          ...n,
-          id: n.id || undefined,
-        })
-      );
-      activeNoteId = notes[0] ? notes[0].id : null;
-      persistNotes();
-      renderNotesList();
-      renderActiveNote();
-    } catch (err) {
-      console.error("Import failed", err);
-      alert("Import failed: invalid JSON file.");
+    } catch {
+      // Not JSON, fall through to text parsing
     }
+
+    // Try custom plain-text format
+    const parsedTextNotes = parseNotesFromTextFormat(text);
+    if (!parsedTextNotes.length) {
+      alert("Import failed: file is not valid JSON or supported text format.");
+      return;
+    }
+
+    notes = parsedTextNotes.map((n) =>
+      createNote({
+        title: n.title,
+        content: n.content,
+        tags: n.tags,
+        createdAt: n.createdAt,
+        updatedAt: n.updatedAt,
+      })
+    );
+    activeNoteId = notes[0] ? notes[0].id : null;
+    persistNotes();
+    renderNotesList();
+    renderActiveNote();
   };
   reader.readAsText(file);
 }
@@ -410,7 +574,7 @@ function wireImportExport() {
   const importBtn = $("#import");
   if (importBtn && fileInput) {
     importBtn.addEventListener("click", () => {
-      fileInput.value = "";
+      // fileInput.value = "";
       fileInput.click();
     });
     fileInput.addEventListener("change", () => {
@@ -420,13 +584,14 @@ function wireImportExport() {
   }
 }
 
-function initApp() {
+async function initApp() {
   activeUser = getActiveUser();
-  loadNotesForCurrentUser();
+  await loadNotesForCurrentUser();
   wireFiltersAndSearch();
   wireSort();
   wireTagInput();
   wireCrudButtons();
+  wireFormattingToolbar();
   wireAuthButtons();
   wireImportExport();
   updateUserDisplay();
@@ -435,7 +600,9 @@ function initApp() {
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initApp);
+  document.addEventListener("DOMContentLoaded", () => {
+    initApp();
+  });
 } else {
   initApp();
 }
