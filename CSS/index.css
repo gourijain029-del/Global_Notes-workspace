@@ -356,11 +356,22 @@ body { margin: 0; }
 .editor-toolbar {
   display: inline-flex;
   gap: 6px;
+  align-items: center;
   flex-wrap: wrap;
 }
 .editor-toolbar .btn.tiny {
   padding: 4px 8px;
   font-size: 12px;
+}
+.text-size-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-right: 2px;
+}
+.editor-toolbar .select.tiny {
+  padding: 4px 6px;
+  font-size: 12px;
+  min-width: 80px;
 }
 .content-input {
   width: 100%;

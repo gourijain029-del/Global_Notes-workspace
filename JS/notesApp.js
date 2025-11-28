@@ -508,6 +508,29 @@ function wireFormattingToolbar() {
   $("#format-bold")?.addEventListener("click", () => applyFormat("bold"));
   $("#format-underline")?.addEventListener("click", () => applyFormat("underline"));
   $("#format-bullet")?.addEventListener("click", () => applyFormat("insertUnorderedList"));
+
+  // Text size control
+  const textSizeSelect = $("#text-size");
+  if (textSizeSelect) {
+    // Load saved size preference
+    try {
+      const savedSize = localStorage.getItem("notesWorkspace.textSize") || "15";
+      textSizeSelect.value = savedSize;
+      contentEl.style.fontSize = `${savedSize}px`;
+    } catch {
+      contentEl.style.fontSize = "15px";
+    }
+
+    textSizeSelect.addEventListener("change", (e) => {
+      const size = e.target.value;
+      contentEl.style.fontSize = `${size}px`;
+      try {
+        localStorage.setItem("notesWorkspace.textSize", size);
+      } catch {
+        // ignore storage issues
+      }
+    });
+  }
 }
 
 function wireUploadButtons() {
