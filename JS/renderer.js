@@ -1,15 +1,23 @@
 import { getTagColor, escapeHtml, formatDate } from "./utilities.js";
 import { applyFilterSearchAndSort } from "./filterSearchSort.js";
+import { getFolders } from "./folderManager.js";
 
 const $ = (selector) => document.querySelector(selector);
 const $all = (selector) => Array.from(document.querySelectorAll(selector));
 
-export function renderNotesList(notes, activeNoteId, setActiveNote) {
+export function renderNotesList(notes, activeNoteId, setActiveNote, activeFolderId) {
   const listEl = $("#notes-list");
   if (!listEl) return;
   listEl.innerHTML = "";
 
-  const visibleNotes = applyFilterSearchAndSort(notes);
+  let notesToDisplay = notes;
+  if (activeFolderId === null) {
+    notesToDisplay = notes.filter((note) => !note.folderId);
+  } else if (activeFolderId !== undefined) {
+    notesToDisplay = notes.filter((note) => note.folderId === activeFolderId);
+  }
+
+  const visibleNotes = applyFilterSearchAndSort(notesToDisplay);
   if (!visibleNotes.length) {
     const emptyLi = document.createElement("li");
     emptyLi.className = "note-item";
@@ -118,4 +126,65 @@ export function updateUserDisplay(activeUser) {
     loginBtn?.classList.remove("hidden");
     signupBtn?.classList.remove("hidden");
   }
+}
+
+/**
+ * Render folder list in sidebar
+ * @param {Array} folders - All folders
+ * @param {string} activeFolderId - Currently selected folder ID
+ * @param {Function} setActiveFolder - Callback to set active folder
+ */
+export function renderFolders(folders, activeFolderId, setActiveFolder) {
+  const foldersEl = $("#folders-list");
+  if (!foldersEl) return;
+  foldersEl.innerHTML = "";
+
+  // Add "All Notes" (unfiled notes) option
+  const allNotesLi = document.createElement("li");
+  allNotesLi.className = "folder-item" + (activeFolderId === null ? " active" : "");
+  const allNotesBtn = document.createElement("button");
+  allNotesBtn.className = "folder-btn folder-btn-root";
+  allNotesBtn.textContent = "All notes";
+  allNotesBtn.addEventListener("click", () => setActiveFolder(null));
+  allNotesLi.appendChild(allNotesBtn);
+  foldersEl.appendChild(allNotesLi);
+
+  // Add folder items
+  folders.forEach((folder) => {
+    const li = document.createElement("li");
+    li.className = "folder-item" + (folder.id === activeFolderId ? " active" : "");
+    li.dataset.id = folder.id;
+
+    const row = document.createElement("div");
+    row.className = "folder-row";
+
+    const btn = document.createElement("button");
+    btn.className = "folder-btn folder-btn-folder";
+    btn.textContent = folder.name ? escapeHtml(folder.name) : "Untitled folder";
+    btn.addEventListener("click", () => setActiveFolder(folder.id));
+
+    const actions = document.createElement("div");
+    actions.className = "folder-actions";
+
+    const renameBtn = document.createElement("button");
+    renameBtn.type = "button";
+    renameBtn.className = "folder-action-btn folder-rename-btn";
+    renameBtn.title = "Rename folder";
+    renameBtn.innerHTML = "✏️";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.className = "folder-action-btn folder-delete-btn";
+    deleteBtn.title = "Delete folder";
+    deleteBtn.innerHTML = "🗑";
+
+    actions.appendChild(renameBtn);
+    actions.appendChild(deleteBtn);
+
+    row.appendChild(btn);
+    row.appendChild(actions);
+
+    li.appendChild(row);
+    foldersEl.appendChild(li);
+  });
 }
