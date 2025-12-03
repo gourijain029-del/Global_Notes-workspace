@@ -2,18 +2,6 @@ import { THEME_KEY } from "./constants.js";
 
 const DEFAULT_THEME = "dark";
 
-// Theme color definitions for text visibility in different modes
-const THEME_COLORS = {
-  dark: {
-    textColor: "#ffffff",      // White text for dark background
-    backgroundColor: "#1a1a2e", // Dark background
-  },
-  light: {
-    textColor: "#000000",       // Black text for light background
-    backgroundColor: "#ffffff", // Light background
-  },
-};
-
 export function getStoredTheme() {
   try {
     return localStorage.getItem(THEME_KEY) || DEFAULT_THEME;
@@ -29,24 +17,11 @@ export function applyTheme(theme) {
     bodyEl.dataset.theme = normalized;
   }
 
-  // Apply theme colors to content area
+  // Let CSS variables drive colors; clear any previous inline overrides
   const contentEl = document.querySelector("#content");
   if (contentEl) {
-    const colors = THEME_COLORS[normalized];
-    // Set text color based on theme
-    contentEl.style.color = colors.textColor;
-    contentEl.style.backgroundColor = colors.backgroundColor;
-    
-    // Remove any inline color styles that might override theme
-    // This ensures the default text color is applied
-    const allElements = contentEl.querySelectorAll("*");
-    allElements.forEach((el) => {
-      // Only clear color if it's not explicitly styled by user
-      if (el.style.color && el.style.color !== colors.textColor) {
-        // Keep user-applied colors, but log for debugging
-        console.log("Keeping user color:", el.style.color);
-      }
-    });
+    contentEl.style.color = "";
+    contentEl.style.backgroundColor = "";
   }
 
   const toggleBtn = document.querySelector("#theme-toggle");
