@@ -8,9 +8,16 @@
 </head>
 <body>
   <header class="app-header">
-    <div class="brand">
-      <span class="logo">🌎</span>
-      <h1>Global Notes Workspace</h1>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div class="brand">
+        <span class="logo">🌎</span>
+        <h1>Global Notes Workspace</h1>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-left: auto;">
+        <button class="btn ghost" id="theme-toggle" type="button">Light mode</button>
+        <button class="btn primary" id="new-note">New note</button>
+      </div>
     </div>
 
     <div class="actions">
@@ -45,19 +52,15 @@
         </button>
       </div>
 
-      <button class="btn primary" id="new-note">New note</button>
-      <button class="btn ghost" id="theme-toggle" type="button">Light mode</button>
-    </div>
-
-    <!-- New controls -->
-    <div class="auth-controls">
-      <div class="user-pill hidden" id="user-pill" aria-live="polite">
-        <span class="user-name" id="user-name"></span>
-        <button class="btn tiny" id="logout">Log out</button>
+      <div class="auth-controls">
+        <div class="user-pill hidden" id="user-pill" aria-live="polite">
+          <span class="user-name" id="user-name"></span>
+          <button class="btn tiny" id="logout">Log out</button>
+        </div>
+        <button class="btn ghost" id="login">Login</button>
+        <button class="btn ghost" id="signup">Sign Up</button>
+        <button class="btn primary" id="export">Export</button>
       </div>
-      <button class="btn ghost" id="login">Login</button>
-      <button class="btn ghost" id="signup">Sign Up</button>
-      <button class="btn primary" id="export">Export</button>
     </div>
   </header>
 
