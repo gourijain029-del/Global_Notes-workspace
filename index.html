@@ -12,6 +12,7 @@
   <header class="app-header">
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
       <div class="brand">
+        <button class="btn-icon" id="sidebar-toggle" aria-label="Toggle sidebar" style="margin-right: 8px;">☰</button>
         <span class="logo">🌎</span>
         <h1>Global Notes Workspace</h1>
       </div>
@@ -25,8 +26,8 @@
             aria-hidden="true">🖨</span></button>
         <select id="theme-selector" class="select tiny" aria-label="UI Theme">
           <option value="amoled-dark">AMOLED Dark</option>
-          <option value="sepia">Sepia</option>
-          <option value="solarized">Solarized</option>
+          <option value="professional-light">Professional Light</option>
+          <option value="corporate-gray">Corporate Gray</option>
           <option value="minimal-white">Minimal White</option>
         </select>
         <button class="btn primary" id="new-note">New note</button>
@@ -47,12 +48,29 @@
         <button class="chip" data-filter="todo">To‑do</button>
       </div>
 
-      <div class="date-filter">
+      <div class="date-filter smart-calendar-container">
         <label for="date-filter" class="date-filter-label">Date</label>
-        <input type="date" id="date-filter" class="date-filter-input" aria-label="Select note date" />
+        <div class="date-input-wrapper">
+          <input type="date" id="date-filter" class="date-filter-input" aria-label="Select note date" />
+          <button class="btn-icon" id="calendar-toggle" aria-label="Toggle calendar">📅</button>
+        </div>
         <button class="btn tiny ghost" type="button" id="clear-date" aria-label="Clear date filter">
           Clear
         </button>
+        <!-- Custom Calendar Popup -->
+        <div class="smart-calendar-popup hidden" id="smart-calendar">
+          <div class="calendar-header">
+            <button class="cal-nav-btn" id="cal-prev">←</button>
+            <span class="cal-current-month" id="cal-month-year">December 2025</span>
+            <button class="cal-nav-btn" id="cal-next">→</button>
+          </div>
+          <div class="calendar-grid" id="calendar-grid">
+            <!-- Days will be injected here -->
+          </div>
+          <div class="calendar-footer">
+            <button class="btn tiny ghost" id="cal-today">Today</button>
+          </div>
+        </div>
       </div>
 
       <div class="auth-controls">
@@ -156,79 +174,86 @@
 
       <div class="editor-body">
         <div class="editor-toolbar" aria-label="Text formatting controls">
-          <label for="text-size" class="text-size-label">Size:</label>
-          <select id="text-size" class="select tiny" aria-label="Text size">
-            <option value="12">12 px</option>
-            <option value="13">13 px</option>
-            <option value="14">14 px</option>
-            <option value="15" selected>15 px</option>
-            <option value="16">16 px</option>
-            <option value="17">17 px</option>
-            <option value="18">18 px</option>
-            <option value="19">19 px</option>
-            <option value="20">20 px</option>
-            <option value="21">21 px</option>
-            <option value="22">22 px</option>
-            <option value="23">23 px</option>
-            <option value="24">24 px</option>
-          </select>
-          <label for="text-color" class="text-size-label">Color:</label>
-          <select id="text-color" class="select tiny" aria-label="Text color">
-            <option value="" selected>Default</option>
-            <!-- light / accent colors -->
-            <option value="#ff6b6b">Red</option>
-            <option value="#4ecdc4">Teal</option>
-            <option value="#45b7d1">Blue</option>
-            <option value="#96ceb4">Green</option>
-            <option value="#ffeaa7">Yellow</option>
-            <option value="#dda0dd">Purple</option>
-            <!-- darker colors -->
-            <option value="#000000">Black</option>
-            <option value="#2d3436">Dark gray</option>
-            <option value="#2c3e50">Navy</option>
-            <option value="#1e272e">Charcoal</option>
-            <option value="#8e44ad">Dark purple</option>
-            <option value="#c0392b">Dark red</option>
-            <option value="#145a32">Dark green</option>
-          </select>
-          <label for="note-theme" class="text-size-label">Card:</label>
-          <select id="note-theme" class="select tiny" aria-label="Note card theme">
-            <option value="classic-blue">Classic Blue</option>
-            <option value="elegant-purple">Elegant Purple</option>
-            <option value="forest-green">Forest Green</option>
-            <option value="sunset-orange">Sunset Orange</option>
-            <option value="ocean-teal">Ocean Teal</option>
-            <option value="rose-gold">Rose Gold</option>
-            <option value="slate-gray">Slate Gray</option>
-            <option value="crimson-red">Crimson Red</option>
-          </select>
-          <label for="editor-pattern" class="text-size-label">Background:</label>
-          <select id="editor-pattern" class="select tiny" aria-label="Editor background pattern">
-            <option value="plain">Plain</option>
-            <option value="lined">Lined</option>
-            <option value="grid">Grid</option>
-            <option value="dotted">Dotted</option>
-          </select>
-          <select id="format-action" class="select tiny" aria-label="Text formatting">
-            <option value="">Format</option>
-            <option value="bold">Bold</option>
-            <option value="italic">Italic</option>
-            <option value="underline">Underline</option>
-            <option value="bullet">Bullet List</option>
-          </select>
-          <select id="edit-action" class="select tiny" aria-label="Edit actions">
-            <option value="">Edit</option>
-            <option value="cut">Cut</option>
-            <option value="copy">Copy</option>
-            <option value="paste">Paste</option>
-          </select>
-          <select id="insert-action" class="select tiny" aria-label="Insert content">
-            <option value="">Insert</option>
-            <option value="image">Image</option>
-            <option value="table">Table</option>
-          </select>
+          <div class="toolbar-controls">
+            <label for="text-size" class="text-size-label">Size:</label>
+            <select id="text-size" class="select tiny" aria-label="Text size">
+              <option value="12">12 px</option>
+              <option value="13">13 px</option>
+              <option value="14">14 px</option>
+              <option value="15" selected>15 px</option>
+              <option value="16">16 px</option>
+              <option value="17">17 px</option>
+              <option value="18">18 px</option>
+              <option value="19">19 px</option>
+              <option value="20">20 px</option>
+              <option value="21">21 px</option>
+              <option value="22">22 px</option>
+              <option value="23">23 px</option>
+              <option value="24">24 px</option>
+            </select>
+            <label for="text-color" class="text-size-label">Color:</label>
+            <select id="text-color" class="select tiny" aria-label="Text color">
+              <option value="" selected>Default</option>
+              <!-- light / accent colors -->
+              <option value="#ff6b6b">Red</option>
+              <option value="#4ecdc4">Teal</option>
+              <option value="#45b7d1">Blue</option>
+              <option value="#96ceb4">Green</option>
+              <option value="#ffeaa7">Yellow</option>
+              <option value="#dda0dd">Purple</option>
+              <!-- darker colors -->
+              <option value="#000000">Black</option>
+              <option value="#2d3436">Dark gray</option>
+              <option value="#2c3e50">Navy</option>
+              <option value="#1e272e">Charcoal</option>
+              <option value="#8e44ad">Dark purple</option>
+              <option value="#c0392b">Dark red</option>
+              <option value="#145a32">Dark green</option>
+            </select>
+            <label for="note-theme" class="text-size-label">Card:</label>
+            <select id="note-theme" class="select tiny" aria-label="Note card theme">
+              <option value="classic-blue">Classic Blue</option>
+              <option value="elegant-purple">Elegant Purple</option>
+              <option value="forest-green">Forest Green</option>
+              <option value="sunset-orange">Sunset Orange</option>
+              <option value="ocean-teal">Ocean Teal</option>
+              <option value="rose-gold">Rose Gold</option>
+              <option value="slate-gray">Slate Gray</option>
+              <option value="crimson-red">Crimson Red</option>
+            </select>
+            <label for="editor-pattern" class="text-size-label">Background:</label>
+            <select id="editor-pattern" class="select tiny" aria-label="Editor background pattern">
+              <option value="plain">Plain</option>
+              <option value="lined">Lined</option>
+              <option value="grid">Grid</option>
+              <option value="dotted">Dotted</option>
+            </select>
+            <select id="format-action" class="select tiny" aria-label="Text formatting">
+              <option value="">Format</option>
+              <option value="bold">Bold</option>
+              <option value="italic">Italic</option>
+              <option value="underline">Underline</option>
+              <option value="strikethrough">Strikethrough</option>
+              <option value="alignLeft">Align Left</option>
+              <option value="alignCenter">Align Center</option>
+              <option value="alignRight">Align Right</option>
+              <option value="bullet">Bullet List</option>
+            </select>
+            <select id="edit-action" class="select tiny" aria-label="Edit actions">
+              <option value="">Edit</option>
+              <option value="cut">Cut</option>
+              <option value="copy">Copy</option>
+              <option value="paste">Paste</option>
+            </select>
+            <select id="insert-action" class="select tiny" aria-label="Insert content">
+              <option value="">Insert</option>
+              <option value="image">Image</option>
+              <option value="table">Table</option>
+            </select>
+            <input type="file" id="image-upload-input" accept="image/*" />
+          </div>
+          <button class="btn-icon tiny" id="toolbar-toggle" aria-label="Toggle toolbar">▲</button>
         </div>
-        <input type="file" id="image-upload-input" accept="image/*" />
         <div class="content-input" id="content" contenteditable="true" spellcheck="true"
           aria-label="Note content editor"></div>
       </div>

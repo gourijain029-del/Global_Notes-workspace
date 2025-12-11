@@ -10,6 +10,8 @@ import { wireAuthButtons } from "./authButtons.js";
 import { wireImportExport } from "./exportImport.js";
 import { wireThemeToggle } from "./themeManager.js";
 import { getActiveFilter, getSelectedDate } from "./filterSearchSort.js";
+import { wireSidebarToggle, wireToolbarToggle } from "./layoutManager.js";
+import { initSmartCalendar } from "./smartCalendar.js";
 
 
 // Global state
@@ -19,6 +21,7 @@ const state = {
   activeUser: null,
   folders: [],
   activeFolderId: null, // null means "All Notes"
+  calendarWidget: null
 };
 
 // Sets the currently active note and updates the UI to reflect the change
@@ -43,7 +46,10 @@ const callbacks = {
     callbacks.renderNotesList();
   },
   // Renders the list of notes in the sidebar
-  renderNotesList: () => renderNotesList(state.notes, state.activeNoteId, setActiveNote, state.activeFolderId),
+  renderNotesList: () => {
+    renderNotesList(state.notes, state.activeNoteId, setActiveNote, state.activeFolderId);
+    state.calendarWidget?.render(); // Update calendar indicators
+  },
   // Renders the currently active note in the main editor
   renderActiveNote: () => renderActiveNote(state.notes.find((n) => n.id === state.activeNoteId), () => { }),
   // Renders the folders list in the sidebar
@@ -51,7 +57,10 @@ const callbacks = {
   // Updates the UI to show the current user's information
   updateUserDisplay: () => updateUserDisplay(state.activeUser),
   // Saves all notes to storage
-  persistNotes: () => persistNotes(state.activeUser, state.notes),
+  persistNotes: () => {
+    persistNotes(state.activeUser, state.notes);
+    state.calendarWidget?.render(); // Update calendar indicators
+  },
   // Loads notes and folders for the current user, ensuring at least one note exists
   loadNotesForCurrentUser: async () => {
     state.notes = loadNotesForCurrentUser(state.activeUser);
@@ -89,6 +98,11 @@ async function initApp() {
   wireThemeToggle();
   wireThemeSelector(state, callbacks);
   wireEditorPatternSelector(state, callbacks);
+  wireSidebarToggle();
+  wireToolbarToggle();
+
+  // Initialize Smart Calendar
+  state.calendarWidget = initSmartCalendar(state, callbacks);
 
   // Initial UI render
   callbacks.updateUserDisplay();

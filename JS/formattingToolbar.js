@@ -50,6 +50,18 @@ export function wireFormattingToolbar() {
         case "underline":
           applyFormat("underline");
           break;
+        case "strikethrough":
+          applyFormat("strikeThrough");
+          break;
+        case "alignLeft":
+          applyFormat("justifyLeft");
+          break;
+        case "alignCenter":
+          applyFormat("justifyCenter");
+          break;
+        case "alignRight":
+          applyFormat("justifyRight");
+          break;
         case "bullet":
           applyFormat("insertUnorderedList");
           break;
