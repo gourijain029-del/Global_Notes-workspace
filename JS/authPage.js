@@ -35,6 +35,42 @@ function initAuthPage() {
     btn.addEventListener("click", () => toggleView(btn.dataset.view));
   });
 
+  // --- Social Auth Mock ---
+  const handleSocialLogin = (provider) => {
+    setMessage(`Connecting to ${provider}...`, "info");
+
+    // Simulate API delay
+    const btn = document.querySelector(`.social-btn.${provider.toLowerCase()}`);
+    if (btn) btn.style.opacity = "0.7";
+
+    setTimeout(() => {
+      // Create mock user if needed, simplify to just logging in as "User"
+      const mockUser = `${provider}User`;
+      mergeGuestNotes(mockUser);
+
+      // Ensure account exists in local list so logic elsewhere holds (optional, but clean)
+      const accounts = getAccounts();
+      if (!accounts.some(a => a.username === mockUser)) {
+        accounts.push({ username: mockUser, password: "social-login-mock", email: `user@${provider.toLowerCase()}.com` });
+        setAccounts(accounts);
+      }
+
+      import("./storage.js").then(({ setActiveUser }) => {
+        setActiveUser(mockUser);
+        setMessage(`Success! Logged in with ${provider}.`, "success");
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 800);
+      });
+    }, 1200);
+  };
+
+  const googleBtn = document.querySelector(".social-btn.google");
+  const githubBtn = document.querySelector(".social-btn.github");
+
+  if (googleBtn) googleBtn.addEventListener("click", () => handleSocialLogin("Google"));
+  if (githubBtn) githubBtn.addEventListener("click", () => handleSocialLogin("GitHub"));
+
   // Initialize the login form with necessary callbacks
   initLoginForm({
     formId: "login-form",

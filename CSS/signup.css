@@ -256,6 +256,82 @@ body::before {
   transform: translateX(3px);
 }
 
+/* ===== SOCIAL AUTH ===== */
+.social-auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.social-btn.google {
+  background: #fff;
+  color: #3c4043;
+  border-color: transparent;
+}
+
+.social-btn.google:hover {
+  background: #f1f2f3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.social-btn.github {
+  background: #24292e;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.social-btn.github:hover {
+  background: #2f363d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 480px) {
   .container {

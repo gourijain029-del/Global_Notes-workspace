@@ -1,5 +1,7 @@
 import { escapeHtml } from "./utilities.js";
 import { insertHtmlAtCursor } from "./formattingToolbar.js";
+import { SketchPad } from "./sketchPad.js";
+import { AudioRecorder } from "./audioRecorder.js";
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -8,9 +10,14 @@ export function wireUploadButtons() {
   const contentEl = $("#content");
   if (!contentEl) return;
 
-  const imageInput = $("#image-upload-input");
+  const mediaInput = $("#media-upload-input");
+  const fileInput = $("#file-upload-input");
 
-  // Insert dropdown handler (Image, Table)
+  // Initialize helpers
+  const sketchPad = new SketchPad('sketch-canvas');
+  const audioRecorder = new AudioRecorder();
+
+  // Insert dropdown handler
   const insertSelect = $("#insert-action");
   if (insertSelect) {
     insertSelect.addEventListener("change", (e) => {
@@ -18,45 +25,102 @@ export function wireUploadButtons() {
       if (!action) return;
 
       switch (action) {
-        case "image":
-          // Trigger file upload
-          if (imageInput) {
-            imageInput.value = "";
-            imageInput.click();
-          }
+        case "photo-video":
+          if (mediaInput) mediaInput.click();
+          break;
+        case "audio":
+          openAudioModal();
+          break;
+        case "file":
+          if (fileInput) fileInput.click();
+          break;
+        case "sketch":
+          openSketchModal();
           break;
         case "table":
-          // Insert table
           insertTable();
           break;
       }
 
-      // Reset dropdown to default
+      // Reset dropdown
       setTimeout(() => {
         e.target.value = "";
       }, 100);
     });
   }
 
-  // Image upload handling
-  if (imageInput) {
-    imageInput.addEventListener("change", () => {
-      const file = imageInput.files && imageInput.files[0];
+  // --- File Input Handlers ---
+
+  // Generic handler for images/videos
+  const handleMediaUpload = (input) => {
+    input.addEventListener("change", () => {
+      const file = input.files && input.files[0];
       if (!file) return;
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result;
-        if (!dataUrl) return;
-        const safeName = escapeHtml(file.name || "image");
-        const html = `<figure class="note-image note-image-size-medium"><img src="${dataUrl}" alt="${safeName}" /><figcaption class="note-image-caption" contenteditable="true">Add caption…</figcaption></figure>`;
-        insertHtmlAtCursor(html);
-      };
-      reader.readAsDataURL(file);
+      if (file.type.startsWith('image/')) {
+        insertImage(file);
+      } else if (file.type.startsWith('video/')) {
+        insertVideo(file);
+      }
+      input.value = ""; // Reset
+    });
+  };
+
+  if (mediaInput) handleMediaUpload(mediaInput);
+
+  // Generic file handler
+  if (fileInput) {
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      insertFileLink(file);
+      fileInput.value = "";
     });
   }
 
-  // Table insertion helper function
+  // --- Insertion Logic ---
+
+  function insertImage(fileOrUrl) {
+    if (typeof fileOrUrl === 'string') {
+      const html = `<figure class="note-image note-image-size-medium"><img src="${fileOrUrl}" alt="Sketch" /><figcaption class="note-image-caption" contenteditable="true">Sketch</figcaption></figure>`;
+      insertHtmlAtCursor(html);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      const safeName = escapeHtml(fileOrUrl.name || "image");
+      const html = `<figure class="note-image note-image-size-medium"><img src="${dataUrl}" alt="${safeName}" /><figcaption class="note-image-caption" contenteditable="true">Add caption…</figcaption></figure>`;
+      insertHtmlAtCursor(html);
+    };
+    reader.readAsDataURL(fileOrUrl);
+  }
+
+  function insertVideo(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      const html = `<div class="note-video"><video controls src="${dataUrl}" style="max-width: 100%; border-radius: 8px;"></video></div><p><br></p>`;
+      insertHtmlAtCursor(html);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function insertFileLink(file) {
+    const safeName = escapeHtml(file.name);
+    const fileUrl = URL.createObjectURL(file);
+
+    // Note: Blob URLs are session-specific. Real apps would upload to server.
+    const html = `<a href="${fileUrl}" target="_blank" contenteditable="false" style="text-decoration: none; display: block; cursor: pointer;">
+        <div class="file-attachment" style="padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+            <span style="font-size: 20px;">📄</span>
+            <span style="color: var(--text); font-weight: 500;">${safeName} (${Math.round(file.size / 1024)} KB)</span>
+        </div>
+     </a><p><br></p>`;
+    insertHtmlAtCursor(html);
+  }
+
   function insertTable() {
     let rows = parseInt(prompt("Number of rows?", "3"), 10);
     let cols = parseInt(prompt("Number of columns?", "3"), 10);
@@ -73,119 +137,147 @@ export function wireUploadButtons() {
       })
       .join("");
 
-    const tableHtml = `<table class="note-table note-table-striped"><tbody>${tableRowsHtml}</tbody></table>`;
+    const tableHtml = `<table class="note-table note-table-striped"><tbody>${tableRowsHtml}</tbody></table><p><br></p>`;
     insertHtmlAtCursor(tableHtml);
   }
 
+  // --- Modals Logic ---
 
-  // Image and table interaction handlers
+  const audioModal = $("#audio-modal");
+  const sketchModal = $("#sketch-modal");
+
+  function openAudioModal() {
+    if (audioModal) audioModal.showModal();
+  }
+
+  function openSketchModal() {
+    if (sketchModal) {
+      sketchPad.reset();
+      sketchModal.showModal();
+    }
+  }
+
+  // Modal Buttons
+  const saveAudioBtn = $("#save-audio-btn");
+  if (saveAudioBtn) {
+    saveAudioBtn.addEventListener("click", () => {
+      const url = audioRecorder.getAudioUrl();
+      if (url) {
+        const html = `<div class="note-audio"><audio controls src="${url}"></audio></div><p><br></p>`;
+        insertHtmlAtCursor(html);
+      }
+      if (audioModal) audioModal.close();
+    });
+  }
+
+  const saveSketchBtn = $("#save-sketch-btn");
+  if (saveSketchBtn) {
+    saveSketchBtn.addEventListener("click", () => {
+      const dataUrl = sketchPad.getImageDataUrl();
+      insertImage(dataUrl);
+      if (sketchModal) sketchModal.close();
+    });
+  }
+
+  // Close buttons delegated handling handled by layoutManager or generic close listeners usually, 
+  // but let's ensure specific modal close buttons work here just in case.
+  document.querySelectorAll(".close-modal").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const modal = e.target.closest("dialog");
+      if (modal) modal.close();
+    });
+  });
+
+
+  // --- Event Delegation for Interactions ---
+
   contentEl.addEventListener("click", (event) => {
     const target = event.target;
 
-    // Handle image clicks - size chooser with custom option
-    if (target instanceof HTMLImageElement) {
-      const figure = target.closest("figure.note-image");
-      if (!figure) return;
+    // Image resizing (Unified)
+    if (target instanceof HTMLImageElement && target.closest("figure.note-image")) {
+      handleImageClick(target);
+    }
 
-      // Derive current display size description
-      let currentSize = "custom";
-      if (figure.classList.contains("note-image-size-small")) currentSize = "small";
-      else if (figure.classList.contains("note-image-size-medium")) currentSize = "medium";
-      else if (figure.classList.contains("note-image-size-large")) currentSize = "large";
-
-      const input = prompt(
-        "Set image size (examples: small, medium, large, 40%, 300px)",
-        currentSize
-      );
-      if (!input) return;
-
-      const raw = input.trim();
-      const valueLower = raw.toLowerCase();
-
-      // First handle named presets via CSS classes
-      if (["small", "medium", "large"].includes(valueLower)) {
-        figure.classList.remove(
-          "note-image-size-small",
-          "note-image-size-medium",
-          "note-image-size-large"
-        );
-        target.style.width = "";
-        target.style.maxWidth = "";
-        figure.classList.add(`note-image-size-${valueLower}`);
-        return;
-      }
-
-      // Otherwise treat as custom numeric size
-      let numeric = raw;
-      let unit = "%";
-      if (raw.endsWith("px")) {
-        numeric = raw.slice(0, -2);
-        unit = "px";
-      } else if (raw.endsWith("%")) {
-        numeric = raw.slice(0, -1);
-        unit = "%";
-      }
-
-      const num = Number.parseFloat(numeric);
-      if (!Number.isFinite(num) || num <= 0) {
-        alert("Please enter a positive number (e.g. 40%, 300px).");
-        return;
-      }
-
-      // Reasonable bounds
-      const clamped = unit === "%" ? Math.max(5, Math.min(num, 100)) : Math.max(20, Math.min(num, 2000));
-
-      // Remove preset classes and apply inline style
-      figure.classList.remove(
-        "note-image-size-small",
-        "note-image-size-medium",
-        "note-image-size-large"
-      );
-      target.style.maxWidth = "none";
-      target.style.width = `${clamped}${unit}`;
-    }//check this
-
-    // Handle table clicks - right-click to delete
-    if (target instanceof HTMLTableElement || target.closest("table.note-table")) {
-      const table = target.closest("table.note-table");
-      if (!table) return;
-
-      if (event.button === 2 || event.ctrlKey || event.metaKey) {
-        event.preventDefault();
-        if (confirm("Delete this table?")) {
-          table.remove();
-        }
-        return;
-      }
+    // Table deletion
+    if ((target instanceof HTMLTableElement || target.closest("table.note-table")) && (event.button === 2 || event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      if (confirm("Delete this table?")) target.closest("table").remove();
     }
   });
 
-  // Add context menu for right-click options
+  function handleImageClick(img) {
+    const figure = img.closest("figure.note-image");
+    const currentSize = figure.classList.contains("note-image-size-small") ? "small" :
+      figure.classList.contains("note-image-size-medium") ? "medium" :
+        figure.classList.contains("note-image-size-large") ? "large" : "custom";
+
+    const input = prompt("Set image size (small, medium, large, or %/px):", currentSize);
+    if (!input) return;
+
+    const val = input.trim().toLowerCase();
+    figure.classList.remove("note-image-size-small", "note-image-size-medium", "note-image-size-large");
+    img.style.width = "";
+
+    if (["small", "medium", "large"].includes(val)) {
+      figure.classList.add(`note-image-size-${val}`);
+    } else {
+      img.style.width = val; // let CSS handle valid units
+    }
+  }
+
+  // --- Context Menu for Deletion ---
+  // --- Context Menu for Deletion ---
   contentEl.addEventListener("contextmenu", (event) => {
     const target = event.target;
+    let deletable = null;
+    let typeName = "item";
 
-    // For images
-    if (target instanceof HTMLImageElement) {
-      const figure = target.closest("figure.note-image");
-      if (figure) {
-        event.preventDefault();
-        const action = confirm("Right-click: Delete image?\n\nOK to delete, Cancel to keep");
-        if (action) {
-          figure.remove();
-        }
-        return;
-      }
+    // 1. Images (including Sketches)
+    if (target instanceof HTMLImageElement && target.closest("figure.note-image")) {
+      deletable = target.closest("figure.note-image");
+      typeName = "image";
+    }
+    // 2. Tables
+    else if (target.closest("table.note-table")) {
+      deletable = target.closest("table.note-table");
+      typeName = "table";
+    }
+    // 3. Videos
+    else if (target.closest(".note-video")) {
+      deletable = target.closest(".note-video");
+      typeName = "video";
+    }
+    // 4. Audio
+    else if (target.closest(".note-audio")) {
+      deletable = target.closest(".note-audio");
+      typeName = "audio";
+    }
+    // 5. Files (Wrapped in <a>)
+    else if (target.closest(".file-attachment") || target.closest("a > .file-attachment")) {
+      const wrapper = target.closest("a");
+      // If wrapped in <a>, delete the <a>. Otherwise delete the div (legacy).
+      deletable = wrapper ? wrapper : target.closest(".file-attachment");
+      typeName = "file attachment";
     }
 
-    // For tables
-    if (target.closest("table.note-table")) {
+    if (deletable) {
       event.preventDefault();
-      const table = target.closest("table.note-table");
-      const action = confirm("Right-click: Delete table?\n\nOK to delete, Cancel to keep");
-      if (action) {
-        table.remove();
+      event.stopPropagation(); // prevent opening the link
+
+      // Select for visual feedback
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNode(deletable);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      if (confirm(`Delete this ${typeName}?`)) {
+        deletable.remove();
+      } else {
+        // Deselect if cancelled
+        selection.removeAllRanges();
       }
-      return;
     }
   });
 }

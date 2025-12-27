@@ -5,7 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Global Notes Workspace</title>
-  <link rel="stylesheet" href="CSS/index.css?v=3" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/index.css?v=4" />
 </head>
 
 <body>
@@ -289,10 +292,15 @@
             </select>
             <select id="insert-action" class="select tiny" aria-label="Insert content">
               <option value="">Insert</option>
-              <option value="image">Image</option>
+              <option value="photo-video">Choose Photo or Video</option>
+              <option value="audio">Record Audio</option>
+              <option value="file">Attach File</option>
+              <option value="sketch">Add Sketch</option>
               <option value="table">Table</option>
             </select>
-            <input type="file" id="image-upload-input" accept="image/*" />
+            <!-- Hidden inputs for triggers -->
+            <input type="file" id="media-upload-input" accept="image/*,video/*" hidden />
+            <input type="file" id="file-upload-input" hidden />
           </div>
           <button class="btn-icon tiny" id="toolbar-toggle" aria-label="Toggle toolbar">▲</button>
         </div>
@@ -343,6 +351,62 @@
             <span class="stat-label">Last Active</span>
           </div>
         </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Audio Recorder Modal -->
+  <dialog id="audio-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Record Audio</h2>
+        <button class="btn-icon close-modal">×</button>
+      </div>
+      <div class="audio-body">
+        <div class="audio-visualizer" id="audio-visualizer">
+          <!-- Simple waveform visualization -->
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+        </div>
+        <div class="audio-controls">
+          <button class="btn primary" id="start-record-btn">Record</button>
+          <button class="btn danger" id="stop-record-btn" disabled>Stop</button>
+        </div>
+        <div class="audio-status" id="audio-status">Ready to record</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary close-modal">Cancel</button>
+        <button class="btn primary" id="save-audio-btn" disabled>Insert Audio</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Sketch Pad Modal -->
+  <dialog id="sketch-modal" class="modal large">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Sketch</h2>
+        <button class="btn-icon close-modal">×</button>
+      </div>
+      <div class="sketch-body">
+        <canvas id="sketch-canvas" width="600" height="400"></canvas>
+        <div class="sketch-tools">
+          <button class="btn tiny active" id="tool-pen">Pen</button>
+          <button class="btn tiny" id="tool-eraser">Eraser</button>
+          <input type="color" id="sketch-color" value="#000000" title="Color">
+          <input type="range" id="sketch-size" min="1" max="20" value="2" title="Size">
+          <button class="btn tiny danger" id="tool-clear">Clear</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary close-modal">Cancel</button>
+        <button class="btn primary" id="save-sketch-btn">Insert Sketch</button>
       </div>
     </div>
   </dialog>
