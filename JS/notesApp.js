@@ -17,6 +17,7 @@ import { wireProfileManager, updateHeaderAvatar } from "./profileManager.js";
 import { wireSlashCommands } from "./slashCommands.js";
 import { wireMailFeature } from "./mailFeature.js";
 import { wireShareFeature, checkSharedUrl } from "./shareFeature.js";
+import { wireShapeManager } from "./shapeManager.js";
 
 
 // Global state
@@ -114,6 +115,7 @@ async function initApp() {
   wireSlashCommands();
   wireMailFeature();
   wireShareFeature(state, callbacks);
+  wireShapeManager();
 
   // Initialize Smart Calendar
   state.calendarWidget = initSmartCalendar(state, callbacks);

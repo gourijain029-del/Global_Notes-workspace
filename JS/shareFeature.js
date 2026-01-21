@@ -21,13 +21,16 @@ export function wireShareFeature(state, callbacks) {
             }
 
             // Generate the share link
+            console.log("Generating share link..."); // DEBUG
             const link = generateShareLink(activeNote);
+            console.log("Share link generated:", link); // DEBUG
 
             // Update the input
             if (linkInput) linkInput.value = link;
 
             // Generate QR Code
             requestAnimationFrame(() => {
+                console.log("Generating QR Code..."); // DEBUG
                 generateQRCode(link);
             });
 
@@ -78,7 +81,7 @@ function generateShareLink(note) {
 
     // Replace localhost or 127.0.0.1 with LAN IP for mobile sharing
     if (baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
-        const lanIp = '10.10.8.40'; // Detected LAN IP
+        const lanIp = '10.110.153.152'; // Detected LAN IP
         baseUrl = baseUrl.replace(/localhost|127\.0\.0\.1/, lanIp);
     }
 
@@ -95,9 +98,10 @@ function generateShareLink(note) {
     const jsonString = JSON.stringify(shareData);
     // Use LZString if available, fallback to standard encoding
     let encodedData;
-    if (typeof LZString !== 'undefined') {
-        encodedData = LZString.compressToEncodedURIComponent(jsonString);
+    if (window.LZString) {
+        encodedData = window.LZString.compressToEncodedURIComponent(jsonString);
     } else {
+        console.warn("LZString is undefined, falling back to basic encoding");
         encodedData = encodeURIComponent(jsonString);
     }
 
@@ -110,25 +114,30 @@ function generateShareLink(note) {
  */
 function generateQRCode(text) {
     const container = document.getElementById('qrcode-container');
-    if (!container) return;
+    if (!container) {
+        console.error("QR Container not found");
+        return;
+    }
 
     // Clear previous QR
     container.innerHTML = '';
 
     // Check if QRCode lib is loaded
-    if (typeof QRCode === 'undefined') {
-        container.innerHTML = 'QR Code library not loaded.';
+    if (!window.QRCode) {
+        console.error("QRCode library not loaded");
+        container.innerHTML = 'QR Code library not loaded. Check network or cache.';
         return;
     }
 
     try {
-        new QRCode(container, {
+        console.log("Creating new QRCode instance for", text);
+        new window.QRCode(container, {
             text: text,
             width: 256,
             height: 256,
             colorDark: "#000000",
             colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.M
+            correctLevel: window.QRCode.CorrectLevel.M
         });
     } catch (e) {
         console.error("QR Generation Error:", e);

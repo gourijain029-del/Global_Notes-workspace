@@ -255,21 +255,26 @@
               <label for="text-color" class="text-size-label">Color:</label>
               <select id="text-color" class="select tiny" aria-label="Text color">
                 <option value="" selected>Default</option>
-                <!-- light / accent colors -->
-                <option value="#ff6b6b">Red</option>
-                <option value="#4ecdc4">Teal</option>
-                <option value="#45b7d1">Blue</option>
-                <option value="#96ceb4">Green</option>
-                <option value="#ffeaa7">Yellow</option>
-                <option value="#dda0dd">Purple</option>
-                <!-- darker colors -->
                 <option value="#000000">Black</option>
                 <option value="#2d3436">Dark gray</option>
-                <option value="#2c3e50">Navy</option>
-                <option value="#1e272e">Charcoal</option>
-                <option value="#8e44ad">Dark purple</option>
-                <option value="#c0392b">Dark red</option>
-                <option value="#145a32">Dark green</option>
+                <option value="#ff6b6b">Red</option>
+                <option value="#45b7d1">Blue</option>
+                <option value="#96ceb4">Green</option>
+                <option value="#dda0dd">Purple</option>
+              </select>
+              <input type="color" id="custom-text-color" class="color-picker-tiny" title="Custom color" />
+            </div>
+
+            <div class="toolbar-group">
+              <label for="highlight-color" class="text-size-label">Highlight:</label>
+              <select id="highlight-color" class="select tiny" aria-label="Highlight color">
+                <option value="" selected>None</option>
+                <option value="#FFFF00">Neon Yellow</option>
+                <option value="#39FF14">Neon Green</option>
+                <option value="#00FFFF">Cyan</option>
+                <option value="#FF00FF">Magenta</option>
+                <option value="#FF5F1F">Neon Orange</option>
+                <option value="#FF69B4">Hot Pink</option>
               </select>
             </div>
 
@@ -326,6 +331,7 @@
               <option value="audio">Record Audio</option>
               <option value="file">Attach File</option>
               <option value="sketch">Add Sketch</option>
+              <option value="shapes">Shapes</option>
               <option value="table">Table</option>
             </select>
             <!-- Hidden inputs for triggers -->
@@ -436,6 +442,61 @@
       <div class="modal-footer">
         <button class="btn secondary close-modal">Cancel</button>
         <button class="btn primary" id="save-sketch-btn">Insert Sketch</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Shapes Modal -->
+  <dialog id="shapes-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Insert Shape</h2>
+        <button class="btn-icon close-modal">×</button>
+      </div>
+      <div class="shapes-body">
+        <div class="shapes-grid">
+          <button class="shape-btn" data-shape="rectangle" aria-label="Rectangle">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" fill="none" stroke-width="2" />
+            </svg>
+            <span>Rectangle</span>
+          </button>
+          <button class="shape-btn" data-shape="circle" aria-label="Circle">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" fill="none" stroke-width="2" />
+            </svg>
+            <span>Circle</span>
+          </button>
+          <button class="shape-btn" data-shape="triangle" aria-label="Triangle">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path d="M12 4L21 20H3L12 4Z" stroke="currentColor" fill="none" stroke-width="2" />
+            </svg>
+            <span>Triangle</span>
+          </button>
+          <button class="shape-btn" data-shape="star" aria-label="Star">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                stroke="currentColor" fill="none" stroke-width="2" />
+            </svg>
+            <span>Star</span>
+          </button>
+          <button class="shape-btn" data-shape="arrow-right" aria-label="Arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" fill="none" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Arrow</span>
+          </button>
+          <button class="shape-btn" data-shape="line" aria-label="Line">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>Line</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary close-modal">Cancel</button>
       </div>
     </div>
   </dialog>

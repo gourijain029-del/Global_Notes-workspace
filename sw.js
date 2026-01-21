@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-note-app-cache-v3';
+const CACHE_NAME = 'my-note-app-cache-v5';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -6,6 +6,8 @@ const urlsToCache = [
   '/CSS/signup.css',
   '/CSS/styles.css',
   '/HTML/signup.html',
+  '/JS/vendor/lz-string.min.js',
+  '/JS/vendor/qrcode.min.js',
   '/JS/aiAssistant.js',
   '/JS/audioRecorder.js',
   '/JS/authButtons.js',
@@ -27,6 +29,7 @@ const urlsToCache = [
   '/JS/notesApp.js',
   '/JS/profileManager.js',
   '/JS/renderer.js',
+  '/JS/shapeManager.js',
   '/JS/sketchPad.js',
   '/JS/slashCommands.js',
   '/JS/smartCalendar.js',

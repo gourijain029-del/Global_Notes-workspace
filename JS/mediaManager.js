@@ -37,6 +37,10 @@ export function wireUploadButtons() {
         case "sketch":
           openSketchModal();
           break;
+        case "shapes":
+          const shapesModal = document.getElementById("shapes-modal");
+          if (shapesModal) shapesModal.showModal();
+          break;
         case "table":
           insertTable();
           break;
@@ -261,6 +265,12 @@ export function wireUploadButtons() {
       typeName = "file attachment";
     }
 
+    // 6. Shapes (SVG)
+    else if ((target.closest(".note-shape-container") || target.closest("svg")) && !target.closest("button")) { // Exclude headers/buttons
+      deletable = target.closest(".note-shape-container") || target.closest("svg");
+      typeName = "shape";
+    }
+
     if (deletable) {
       event.preventDefault();
       event.stopPropagation(); // prevent opening the link
@@ -277,6 +287,25 @@ export function wireUploadButtons() {
       } else {
         // Deselect if cancelled
         selection.removeAllRanges();
+      }
+    }
+  });
+
+
+  // Shape Click Handling for Resize
+  contentEl.addEventListener("click", (event) => {
+    const target = event.target;
+    const container = target.closest(".note-shape-container");
+
+    if (container) {
+      const svg = container.querySelector("svg");
+      if (svg) {
+        const currentWidth = svg.getAttribute("width") || "100";
+        const newSize = prompt("Set shape size (e.g., 50, 200, 100%):", currentWidth);
+        if (newSize) {
+          svg.setAttribute("width", newSize);
+          svg.setAttribute("height", newSize);
+        }
       }
     }
   });

@@ -733,6 +733,25 @@ body {
   font-size: 12px;
 }
 
+.color-picker-tiny {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  cursor: pointer;
+}
+
+.color-picker-tiny::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.color-picker-tiny::-webkit-color-swatch {
+  border-radius: 4px;
+  border: none;
+}
+
 /* Specific fix for header theme selector to prevent truncation */
 #theme-selector {
   min-width: 140px;
@@ -795,6 +814,63 @@ body {
 
 .folder-item {
   margin: 0;
+}
+
+/* Shapes Modal */
+.shapes-body {
+  padding: 20px;
+}
+
+.shapes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.shape-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shape-btn:hover {
+  background: var(--surface-3);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.shape-btn svg {
+  width: 32px;
+  height: 32px;
+}
+
+.shape-btn span {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.note-shape-container {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: move;
+  margin: 0 4px;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.note-shape-container:hover {
+  outline: 2px solid var(--primary);
+  border-radius: 4px;
 }
 
 .folder-row {
@@ -2073,6 +2149,7 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
   background: var(--surface-2);
   color: var(--primary);
 }
+
 /* ===== Share Modal ===== */
 .share-body {
   display: flex;
@@ -2087,13 +2164,15 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
   padding: 16px;
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  display: flex; /* Ensure centering if needed */
+  display: flex;
+  /* Ensure centering if needed */
   justify-content: center;
   align-items: center;
 }
 
 #qrcode-container img {
-  display: block; /* Remove bottom space */
+  display: block;
+  /* Remove bottom space */
 }
 
 .share-body p {

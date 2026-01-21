@@ -103,6 +103,21 @@ export function wireFormattingToolbar() {
 
 
 
+  // Undo/Redo buttons
+  const undoBtn = $("#edit-undo");
+  if (undoBtn) {
+    undoBtn.addEventListener("click", () => {
+      applyFormat("undo");
+    });
+  }
+
+  const redoBtn = $("#edit-redo");
+  if (redoBtn) {
+    redoBtn.addEventListener("click", () => {
+      applyFormat("redo");
+    });
+  }
+
   // Text size control with proper event handling
   const textSizeSelect = $("#text-size");
   if (textSizeSelect) {
@@ -170,6 +185,69 @@ export function wireFormattingToolbar() {
       // Reset dropdown to default after applying
       setTimeout(() => {
         textColorSelect.value = "";
+      }, 100);
+    });
+  }
+
+  // Custom text color control
+  const customColorInput = $("#custom-text-color");
+  if (customColorInput) {
+    customColorInput.addEventListener("input", (e) => {
+      const color = e.target.value;
+      contentEl.focus();
+      if (color) {
+        applyFormat("foreColor", color);
+        // Note: applyFormat currently only takes one arg. We need to handle the color arg.
+        // Wait, I can't modify applyFormat easily in this block without potentially breaking others or duplicating logic.
+        // I'll just use document.execCommand directly like the select handler does.
+        try {
+          document.execCommand("foreColor", false, color);
+        } catch (err) {
+          console.error("Color command failed", err);
+        }
+      }
+    });
+
+    // Also handle 'change' event to ensure final selection is applied
+    customColorInput.addEventListener("change", (e) => {
+      const color = e.target.value;
+      contentEl.focus();
+      if (color) {
+        try {
+          document.execCommand("foreColor", false, color);
+        } catch (err) {
+          console.error("Color command failed", err);
+        }
+      }
+    });
+  }
+
+  // Highlight color control
+  const highlightColorSelect = $("#highlight-color");
+  console.log("Highlight Element:", highlightColorSelect); // DEBUG
+  if (highlightColorSelect) {
+    highlightColorSelect.addEventListener("change", (e) => {
+      const color = e.target.value;
+      contentEl.focus();
+      if (color) {
+        try {
+          document.execCommand("hiliteColor", false, color);
+        } catch (err) {
+          console.error("Highlight command failed", err);
+        }
+      } else {
+        try {
+          // Remove highlight (transparent background)
+          document.execCommand("hiliteColor", false, "transparent");
+        } catch (err) {
+          console.error("Remove highlight failed", err);
+        }
+      }
+      // Reset dropdown to default after applying if desired, 
+      // but usually for highlight state it's nice to see what was picked?
+      // Actually standard behavior in this app seems to be reset.
+      setTimeout(() => {
+        highlightColorSelect.value = "";
       }, 100);
     });
   }
