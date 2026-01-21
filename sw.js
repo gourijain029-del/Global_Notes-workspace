@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-note-app-cache-v2';
+const CACHE_NAME = 'my-note-app-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -56,7 +56,7 @@ self.addEventListener('fetch', event => {
         }
         return fetch(event.request);
       }
-    )
+      )
   );
 });
 
