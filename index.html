@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Global Notes v2</title>
+  <title>Global Notes Workspace</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="CSS/index.css?v=8" />
+  <link rel="stylesheet" href="CSS/index.css?v=9" />
   <link rel="stylesheet" href="CSS/tagManager.css" />
   <link rel="manifest" href="/manifest.json">
 </head>
@@ -34,8 +34,7 @@
           <span class="user-name" id="user-name"></span>
           <button class="btn tiny" id="logout">Log out</button>
         </div>
-        <button class="btn ghost" id="login">Login</button>
-        <button class="btn ghost" id="signup">Sign Up</button>
+        <button class="btn ghost" id="login">Sign In</button>
         <button class="btn primary" id="export">Export</button>
       </div>
     </div>
@@ -610,7 +609,7 @@
 
   <script type="text/javascript" src="JS/vendor/lz-string.min.js"></script>
   <script type="text/javascript" src="JS/vendor/qrcode.min.js"></script>
-  <script type="module" src="JS/notesApp.js?v=1.1"></script>
+  <script type="module" src="JS/notesApp.js?v=1.2"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')

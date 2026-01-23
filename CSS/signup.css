@@ -1,18 +1,29 @@
-/* ===== OPTION B: MODERN DARK (LINEAR STYLE) ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+/* ===== CENTERED CARD LAYOUT (DARK THEME) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --bg-page: #0b0e14;
-  --bg-card: #151921;
-  --border-color: #2a2f3a;
-  --border-hover: #3f4552;
+  /* Dark Theme Palette (Grey/Black) */
+  --bg-body: #141414;
+  /* Very dark grey/black background */
+  --bg-card: #1f1f1f;
+  /* Lighter grey for the card/right panel */
+  --bg-input: #2a2a2a;
+  /* Input fields */
+  --bg-brand: #0f0f0f;
+  /* Left panel branding bg */
+
   --text-primary: #ffffff;
-  --text-secondary: #9ca3af;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #666666;
+
   --primary-color: #6366f1;
+  /* Vibrant Indigo/Purple Accent */
   --primary-hover: #4f46e5;
-  --input-bg: #0b0e14;
-  --danger: #f87171;
-  --success: #34d399;
+
+  --border-color: #333333;
+  --border-focus: #6366f1;
+
+  --danger: #ef4444;
 }
 
 * {
@@ -23,170 +34,203 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  min-height: 100vh;
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--bg-page);
-  color: var(--text-primary);
-  /* Very subtle grid/noise */
-  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 30px 30px;
 }
 
-/* ===== CONTAINER & CARD ===== */
-.container {
+/* ===== MAIN CARD CONTAINER ===== */
+.auth-container {
   width: 100%;
-  max-width: 400px;
-  /* Slightly tighter width */
   padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-form {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 24px 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+.main-card {
+  width: 100%;
+  max-width: 1000px;
+  min-height: 600px;
+  background-color: var(--bg-card);
+  border-radius: 20px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333;
 }
 
-/* ===== HEADER ===== */
+/* ===== LEFT SIDE (BRANDING) ===== */
+.card-left {
+  flex: 4;
+  /* 40% width approx */
+  background-color: var(--bg-brand);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  /* Remove padding to fit image */
+  overflow: hidden;
+}
+
+/* Gradient Overlay/Image simulated */
+.card-left::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Subtle purple gradient overlay mimicking the reference */
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.brand-overlay {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Fit image to box */
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
+.brand-text p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* ===== RIGHT SIDE (FORM) ===== */
+.card-right {
+  flex: 5;
+  /* 50-60% width */
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+/* HEADER */
 .form-header {
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.form-logo {
-  width: 70px;
-  height: auto;
-  margin-bottom: 10px;
-  border-radius: 12px;
-  /* Optional, for smoother look */
+  margin-bottom: 32px;
 }
 
 .form-header h2 {
-  font-size: 1.4rem;
+  font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 6px;
-  letter-spacing: -0.01em;
+  margin-bottom: 8px;
 }
 
-.subtitle {
-  font-size: 0.9rem;
+.toggle-text {
   color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
-/* ===== TABS ===== */
-.form-switch {
-  display: flex;
-  background: var(--input-bg);
-  padding: 4px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  border: 1px solid var(--border-color);
-}
-
-.switch-btn {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 0.85rem;
+.toggle-text a {
+  color: var(--primary-color);
+  text-decoration: none;
   font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-.switch-btn.active {
-  background: var(--bg-card);
-  /* Card bg on top of darker input bg */
-  color: var(--text-primary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+.toggle-text a:hover {
+  text-decoration: underline;
 }
 
-/* ===== SOCIAL AUTH (SIDE-BY-SIDE) ===== */
-.social-auth-section {
+/* SOCIAL */
+.social-section {
   display: flex;
-  flex-direction: row;
-  /* Horizontal layout */
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 24px;
 }
 
 .social-btn {
   flex: 1;
-  /* Match widths */
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px;
-  background: var(--bg-card);
+  gap: 10px;
+  padding: 12px;
+  background-color: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 0.9rem;
-  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .social-btn:hover {
-  background: var(--border-color);
-  border-color: var(--border-hover);
+  background-color: #333;
+  border-color: #444;
 }
 
-.social-btn svg {
-  width: 18px;
-  height: 18px;
+.social-icon {
+  width: 20px;
+  height: 20px;
 }
 
-/* Google needs a white bg sometimes, but in dark mode standard is better for consistency.
-   Let's keep it consistent dark button style for both. */
-
-/* ===== DIVIDER ===== */
+/* DIVIDER */
 .divider {
-  display: flex;
-  align-items: center;
-  margin: 24px 0;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
 }
 
-.divider::before,
-.divider::after {
+.divider::before {
   content: "";
-  flex: 1;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
   height: 1px;
   background: var(--border-color);
+  z-index: 1;
 }
 
 .divider span {
+  background: var(--bg-card);
   padding: 0 10px;
+  position: relative;
+  z-index: 2;
 }
 
-/* ===== INPUTS ===== */
+/* INPUTS */
+.input-row {
+  display: flex;
+  gap: 16px;
+}
+
 .input-group {
-  margin-bottom: 16px;
-}
-
-.input-group label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-
-.auth-form input {
+  margin-bottom: 20px;
   width: 100%;
-  padding: 10px 12px;
-  background: var(--input-bg);
+}
+
+.input-group.half {
+  flex: 1;
+}
+
+.auth-form input:not([type="checkbox"]) {
+  width: 100%;
+  padding: 14px 16px;
+  background-color: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.95rem;
@@ -195,84 +239,92 @@ body {
   transition: all 0.2s;
 }
 
+.auth-form input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
 .auth-form input::placeholder {
-  color: #4b5563;
+  color: #666;
 }
 
 .auth-form input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+  border-color: var(--border-focus);
+  background-color: #2f2f2f;
 }
 
-/* ===== LOGIN BUTTON ===== */
-.login-btn {
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.checkbox-group a {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* BUTTONS */
+.primary-btn {
   width: 100%;
-  padding: 10px;
-  background: var(--primary-color);
+  padding: 14px;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  margin-top: 8px;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
-.login-btn:hover {
-  background: var(--primary-hover);
+.primary-btn:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-/* ===== FOOTER ===== */
-.form-footer {
-  margin-top: 24px;
+
+/* GUEST ACCESS */
+.guest-option {
   text-align: center;
+  margin-top: 16px;
 }
 
-.forgot-link {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+.guest-link {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.forgot-link:hover {
-  color: var(--text-primary);
+.guest-link:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
 }
 
-/* ===== MESSAGES ===== */
-.auth-message {
-  text-align: center;
-  margin-bottom: 16px;
-  font-size: 0.85rem;
-  min-height: 20px;
-}
-
-.auth-message.error {
-  color: var(--danger);
-  border: 1px solid rgba(248, 113, 113, 0.2);
-  background: rgba(248, 113, 113, 0.1);
-  padding: 8px;
-  border-radius: 6px;
-}
-
-.auth-message.success {
-  color: var(--success);
-  border: 1px solid rgba(52, 211, 153, 0.2);
-  background: rgba(52, 211, 153, 0.1);
-  padding: 8px;
-  border-radius: 6px;
-}
-
-/* ===== UTILS ===== */
+/* UTILS */
 .hidden {
-  display: none !important;
+  display: none;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 480px) {
-  .login-form {
-    padding: 24px;
-    border: none;
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .main-card {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .card-left {
+    display: none;
+    /* Hide branding on mobile for compactness */
+  }
+
+  .card-right {
+    padding: 30px;
   }
 }

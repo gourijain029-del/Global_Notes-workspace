@@ -20,10 +20,7 @@ export function wireAuthButtons(state, callbacks) {
     window.location.href = "./HTML/signup.html";
   });
 
-  // Handle signup button click - redirects to signup page
-  $("#signup")?.addEventListener("click", () => {
-    window.location.href = "./HTML/signup.html";
-  });
+
 
   // Handle logout button click - performs cleanup and redirects to signup page
   $("#logout")?.addEventListener("click", async () => {

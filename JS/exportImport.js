@@ -138,6 +138,13 @@ function printNotes(notes) {
 // Sets up event listeners for import/export functionality
 export function wireImportExport(state) { // Accepts state object now
   $("#export")?.addEventListener("click", () => {
+    // Restrict export to logged-in users
+    if (!state.activeUser) {
+      alert("Please login to use the export feature.");
+      window.location.href = "./HTML/signup.html";
+      return;
+    }
+
     // Check if we already have the modal
     let modal = document.getElementById("export-modal");
     if (!modal) {

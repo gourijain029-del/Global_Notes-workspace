@@ -130,7 +130,7 @@ export function updateUserDisplay(activeUser) {
   const pill = $("#user-pill");
   const nameEl = $("#user-name");
   const loginBtn = $("#login");
-  const signupBtn = $("#signup");
+
 
   if (!pill || !nameEl) return;
 
@@ -138,12 +138,10 @@ export function updateUserDisplay(activeUser) {
     pill.classList.remove("hidden");
     nameEl.textContent = `@${activeUser}`;
     loginBtn?.classList.add("hidden");
-    signupBtn?.classList.add("hidden");
   } else {
     pill.classList.add("hidden");
     nameEl.textContent = "";
     loginBtn?.classList.remove("hidden");
-    signupBtn?.classList.remove("hidden");
   }
 }
 
