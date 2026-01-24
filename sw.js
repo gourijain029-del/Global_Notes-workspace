@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-note-app-cache-v5';
+const CACHE_NAME = 'my-note-app-cache-v8';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -52,15 +52,30 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // NETWORK FIRST STRATEGY (Critical for development/updates)
+  // Try network first, fall back to cache if offline
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        if (response) {
+        // Check if we received a valid response
+        if (!response || response.status !== 200 || response.type !== 'basic') {
           return response;
         }
-        return fetch(event.request);
-      }
-      )
+
+        // Clone the response
+        var responseToCache = response.clone();
+
+        caches.open(CACHE_NAME)
+          .then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+
+        return response;
+      })
+      .catch(() => {
+        // If network fails, try cache
+        return caches.match(event.request);
+      })
   );
 });
 

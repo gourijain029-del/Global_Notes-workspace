@@ -42,7 +42,9 @@ export function wireShareFeature(state, callbacks) {
 
             // Update Email Link
             if (emailBtn) {
-                const emailUrl = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(shareText)}`;
+                // Ensure newlines are encoded as CRLF (%0D%0A) for better email client compatibility
+                const mailBody = shareText.replace(/\n/g, '\r\n');
+                const emailUrl = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(mailBody)}`;
                 emailBtn.href = emailUrl;
             }
 
