@@ -18,6 +18,7 @@ import { wireMailFeature } from "./mailFeature.js";
 import { wireShareFeature, checkSharedUrl } from "./shareFeature.js";
 import { wireShapeManager } from "./shapeManager.js";
 import { wireTagManager } from "./tagManager.js";
+import { wireAutoSave } from "./autoSave.js";
 import { getSession } from "./authService.js";
 
 
@@ -131,6 +132,7 @@ async function initApp() {
   wireShareFeature(state, callbacks);
   wireShapeManager();
   wireTagManager(state, callbacks);
+  wireAutoSave(state, callbacks);
 
   // Initialize Smart Calendar
   state.calendarWidget = initSmartCalendar(state, callbacks);
