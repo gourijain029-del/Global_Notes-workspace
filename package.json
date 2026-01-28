@@ -13,9 +13,8 @@
   "license": "ISC",
   "devDependencies": {
     "@capacitor/android": "^8.0.1",
-    "@capacitor/cli": "^7.4.5",
+    "@capacitor/cli": "^8.0.2",
     "@capacitor/core": "^8.0.1",
     "@capacitor/ios": "^8.0.1"
-  },
-  "dependencies": {}
+  }
 }
