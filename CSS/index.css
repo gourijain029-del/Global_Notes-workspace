@@ -10,126 +10,152 @@
   display: none !important;
 }
 
-/* Theme: AMOLED Dark (Default) */
+/* Theme: Premium Dark (Default - formerly AMOLED Dark) */
 :root,
 html[data-theme="amoled-dark"] {
-  --bg: #09090b;
-  /* Zinc 950 */
-  --surface: #18181b;
-  /* Zinc 900 */
-  --surface-2: #27272a;
-  /* Zinc 800 */
-  --surface-3: #3f3f46;
-  /* Zinc 700 */
-  --text: #f4f4f5;
-  /* Zinc 100 */
+  /* Base Colors - Deep & Rich */
+  --bg: #0a0a0a;
+  /* Main Background (Deepest Black/Gray) */
+  --surface: #111111;
+  /* Panel Background (Slightly Lighter) */
+  --surface-2: #1a1a1a;
+  /* Secondary Surface (Cards, Inputs) */
+  --surface-3: #262626;
+  /* Hover/Active State */
+
+  /* Text Colors - High Contrast */
+  --text: #ffffff;
+  /* Primary Text */
   --text-dim: #a1a1aa;
-  /* Zinc 400 */
+  /* Secondary Text (Zinc 400) */
   --text-muted: #71717a;
-  /* Zinc 500 */
-  --primary: #6366f1;
-  /* Indigo 500 */
-  --primary-strong: #4f46e5;
-  /* Indigo 600 */
-  --primary-light: #818cf8;
-  /* Indigo 400 */
-  --border: #27272a;
-  /* Zinc 800 */
-  --border-light: #3f3f46;
-  /* Zinc 700 */
-  --accent: #f97316;
-  /* Orange 500 */
+  /* Muted Text (Zinc 500) */
+
+  /* Brand/Accent Colors - Electric Purple */
+  --primary: #8b5cf6;
+  /* Violet 500 */
+  --primary-strong: #7c3aed;
+  /* Violet 600 (Hover) */
+  --primary-light: #a78bfa;
+  /* Violet 400 */
+  --primary-glow: rgba(139, 92, 246, 0.4);
+
+  /* Functional Colors */
+  --border: #262626;
+  /* Subtle Border */
+  --border-light: #404040;
+  /* Slightly lighter border */
+  --accent: #f59e0b;
+  /* Amber 500 (Warning/Highlight) */
   --danger: #ef4444;
   /* Red 500 */
-  --focus: #6366f1;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-  --radius: 6px;
-  /* Tighter radius for professional look */
-  --radius-sm: 4px;
-  --radius-lg: 8px;
+  --success: #22c55e;
+  /* Green 500 */
+
+  /* UI Properties */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+
+  --radius: 8px;
+  /* Modern rounding */
+  --radius-sm: 6px;
+  --radius-lg: 12px;
+
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
-  --bg-gradient: #09090b;
-  /* Solid professional background */
+
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Layout Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-smooth: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Theme: Professional Light */
+/* Theme: Professional Light (Premium) */
 html[data-theme="professional-light"] {
   --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-2: #f8fafc;
+  --surface: #f8fafc;
   /* Slate 50 */
-  --surface-3: #f1f5f9;
+  --surface-2: #f1f5f9;
   /* Slate 100 */
+  --surface-3: #e2e8f0;
+  /* Slate 200 */
+
   --text: #0f172a;
   /* Slate 900 */
   --text-dim: #334155;
   /* Slate 700 */
   --text-muted: #64748b;
   /* Slate 500 */
+
   --primary: #2563eb;
   /* Blue 600 */
   --primary-strong: #1d4ed8;
   /* Blue 700 */
   --primary-light: #3b82f6;
   /* Blue 500 */
+  --primary-glow: rgba(37, 99, 235, 0.2);
+
   --border: #e2e8f0;
   /* Slate 200 */
   --border-light: #cbd5e1;
   /* Slate 300 */
   --accent: #f59e0b;
   --danger: #ef4444;
-  --focus: #2563eb;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --radius: 6px;
-  --radius-sm: 4px;
-  --radius-lg: 8px;
-  --bg-gradient: #ffffff;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+
+  --radius: 8px;
+  --radius-sm: 6px;
+  --radius-lg: 12px;
 }
 
-/* Theme: Nature Green (Light) */
+/* Theme: Nature Green (Premium Forest) */
 html[data-theme="nature-green"] {
-  --bg: #fcfdfc;
+  --bg: #fdfdfc;
+  /* Warm off-white */
   --surface: #ffffff;
-  --surface-2: #f0fdf4;
-  /* Green 50 */
-  --surface-3: #dcfce7;
-  /* Green 100 */
-  --text: #14532d;
+  --surface-2: #f2f7f4;
+  /* Very subtle green tint */
+  --surface-3: #e6ebe8;
+
+  --text: #1a2e22;
+  /* Deep Green-Black */
+  --text-dim: #3a5c45;
+  /* Forest Green */
+  --text-muted: #6c8c77;
+  /* Sage */
+
+  --primary: #15803d;
+  /* Green 700 (Deep, Professional) */
+  --primary-strong: #14532d;
   /* Green 900 */
-  --text-dim: #166534;
-  /* Green 800 */
-  --text-muted: #15803d;
-  /* Green 700 */
-  --primary: #16a34a;
-  /* Green 600 */
-  --primary-strong: #15803d;
-  /* Green 700 */
   --primary-light: #22c55e;
   /* Green 500 */
-  --border: #bbf7d0;
-  /* Green 200 */
-  --border-light: #86efac;
-  /* Green 300 */
-  --accent: #eab308;
-  /* Yellow 500 */
+  --primary-glow: rgba(21, 128, 61, 0.15);
+
+  --border: #e6ebe8;
+  --border-light: #d1d9d4;
+  --accent: #d97706;
+  /* Amber 600 */
   --danger: #dc2626;
-  --focus: #16a34a;
-  --shadow-sm: 0 1px 2px rgba(22, 163, 74, 0.1);
-  --shadow: 0 4px 6px rgba(22, 163, 74, 0.1);
-  --shadow-lg: 0 10px 15px rgba(22, 163, 74, 0.1);
+
+  --shadow-sm: 0 1px 2px rgba(21, 128, 61, 0.05);
+  --shadow: 0 4px 6px -1px rgba(21, 128, 61, 0.05), 0 2px 4px -1px rgba(21, 128, 61, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(21, 128, 61, 0.08);
+
   --radius: 8px;
-  --radius-sm: 4px;
+  --radius-sm: 6px;
   --radius-lg: 12px;
-  --bg-gradient: linear-gradient(to bottom right, #f0fdf4, #ffffff);
+
+  --font-sans: 'Inter', sans-serif;
+  /* Ensure neat typography */
 }
 
 /* Theme: Corporate Gray */
@@ -203,6 +229,67 @@ body {
   margin: 0;
 }
 
+/* Global Refinements */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+  /* Tighter modern look */
+}
+
+/* Modern Button Styles */
+.btn {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn.primary {
+  background: var(--primary);
+  border: 1px solid transparent;
+  /* Ensure consistent sizing */
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.3);
+  /* Purple glow */
+}
+
+.btn.primary:hover {
+  background: var(--primary-strong);
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.4);
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid transparent;
+}
+
+.btn.ghost:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.btn.secondary {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn.secondary:hover {
+  background: var(--surface-3);
+  border-color: var(--border-light);
+}
+
 /* Generic Icon Class */
 .icon {
   width: 18px;
@@ -214,31 +301,107 @@ body {
   stroke-linejoin: round;
 }
 
-body {
-  margin: 0;
-}
-
-/* Base Reset & Theme */
-/* (Keep existing theme variables from lines 1-182) */
-
-/* Updated App Header Styles */
+/* Navbar - Glassmorphism & Premium Layout */
 .app-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--surface);
+  background: rgba(10, 10, 10, 0.8);
+  /* Semi-transparent base */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* ===== Editor (Canvas Feel) ===== */
+  .editor {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    /* Soft depth */
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    /* Match bg or slightly lighter? */
+    overflow: hidden;
+    height: 100%;
+    transition: all var(--transition-smooth);
+  }
+
+  .editor:focus-within {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 1px var(--primary-glow), var(--shadow-lg);
+  }
+
+  .editor-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.02);
+    /* Very subtle tint */
+  }
+
+  /* Note Title Input */
+  #title {
+    font-size: 24px;
+    /* Larger title */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    /* Tight heading */
+    border: none;
+    background: transparent;
+    width: 100%;
+    color: var(--text);
+    padding: 8px 0;
+    outline: none;
+  }
+
+  #title::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+
+  /* Note Meta Info */
+  .note-info {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  /* Editor Content Area */
+  .editor-content {
+    flex: 1;
+    padding: var(--spacing-lg);
+    font-size: 16px;
+    line-height: 1.7;
+    /* Better readability */
+    color: var(--text);
+    outline: none;
+    overflow-y: auto;
+    max-width: 900px;
+    /* Limit line length for readability */
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Empty State / Prompt */
+  .editor-content:empty::before {
+    content: attr(placeholder);
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
   border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
 }
 
-/* Primary Navbar (Top Row) */
 .navbar-primary {
+  height: 64px;
+  padding: 0 var(--spacing-lg);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
-  padding: 0 var(--spacing-lg);
   gap: var(--spacing-md);
 }
 
@@ -257,11 +420,14 @@ body {
 }
 
 .brand h1 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
+  font-size: 18px;
+  /* Slightly larger */
+  font-weight: 700;
+  color: var(--text-heading, #ffffff);
+  /* Fallback to white if var missing */
   margin: 0;
   white-space: nowrap;
+  letter-spacing: -0.02em;
 }
 
 .logo-img {
@@ -300,6 +466,7 @@ body {
   fill: none;
 }
 
+/* Search Bar - Command Palette Style */
 .search-input {
   width: 100%;
   height: 36px;
@@ -309,14 +476,29 @@ body {
   border-radius: var(--radius);
   color: var(--text);
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+  /* Deep inset */
 }
 
 .search-input:focus {
   background: var(--surface);
+  /* Lighter on focus */
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
+  box-shadow: 0 0 0 2px var(--primary-glow);
   outline: none;
+}
+
+/* Separator for Navbar Bottom */
+.app-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  opacity: 0.5;
 }
 
 /* Date Pickers */
@@ -377,6 +559,17 @@ body {
   align-items: center;
   gap: var(--spacing-sm);
   flex: 0 0 auto;
+}
+
+/* Specific sizing for right-side action icons */
+.navbar-right .icon-only {
+  width: 42px;
+  height: 42px;
+}
+
+.navbar-right .icon-only .icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* Buttons */
@@ -612,8 +805,8 @@ input:checked+.toggle-slider:before {
 }
 
 .header-avatar {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--surface-2);
@@ -1090,20 +1283,14 @@ html[data-theme="amoled-dark"] .btn.danger {
   /* Disable transition for immediate resizing */
 }
 
-/* Hidden sidebar state */
+/* Hidden sidebar state (Mini Sidebar) */
+/* Hidden sidebar state (Mini Sidebar) */
 .layout.sidebar-hidden {
-  grid-template-columns: 0 1fr;
-  gap: 0;
+  grid-template-columns: 60px 1fr !important;
+  /* Force 60px width, ignoring variable */
 }
 
-.layout.sidebar-hidden .sidebar {
-  opacity: 0;
-  visibility: hidden;
-  padding: 0;
-  overflow: hidden;
-  border: none;
-  width: 0;
-}
+/* Remove legacy .sidebar hiding rules since we transitioned to .app-sidebar and mini-mode */
 
 /* ===== Sidebar ===== */
 .sidebar-column {
@@ -1166,7 +1353,7 @@ html[data-theme="amoled-dark"] .btn.danger {
   background: var(--border-light);
 } */
 
-.sidebar {
+.app-sidebar {
   border: 1px solid var(--border);
   background: var(--surface);
   /* Clean solid background */
@@ -1809,11 +1996,592 @@ body[data-theme="corporate-gray"] .editor[data-theme="minimal-white"] {
 }
 
 
+/* ========================================= */
+/* SIDEBAR REDESIGN (Notion Style)          */
+/* ========================================= */
+
+/* Sidebar Refinements */
+.app-sidebar {
+  width: var(--sidebar-width);
+  min-width: 240px;
+  max-width: 400px;
+  background-color: var(--surface);
+  /* Slightly distinct */
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px - 48px);
+  /* Subtract header heights */
+  position: sticky;
+  top: 112px;
+  /* 64 + 48 */
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* Sidebar Header - Pro Compact */
+.sidebar-header {
+  padding: 16px 12px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.sidebar-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 28px;
+  width: 100%;
+}
+
+.user-workspace-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Collapse Button */
+#sidebar-collapse-btn {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.sidebar-header:hover #sidebar-collapse-btn {
+  opacity: 1;
+}
+
+/* LIBRARY SECTION (Navigation) */
+.library-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.library-item {
+  border-radius: var(--radius-sm);
+}
+
+.library-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.1s ease-out;
+  text-decoration: none;
+  gap: 8px;
+}
+
+.library-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.library-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Active State */
+.library-item.active .library-btn {
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.library-item.active .library-icon {
+  color: var(--primary);
+  fill: currentColor;
+  fill-opacity: 0.2;
+  /* Subtle fill for active icon if SVG allows */
+}
+
+/* Sidebar Sections General */
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 12px 0;
+}
+
+.sidebar-section.flex-grow {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.section-header {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  height: 24px;
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Add Folder Button (Header) */
+#create-folder {
+  opacity: 0;
+  /* Only show on hover of header, or always visible? Notion shows on hover */
+  transition: opacity 0.2s;
+}
+
+.section-header:hover #create-folder {
+  opacity: 1;
+}
+
+/* Folders List */
+/* Folders List - Pro */
+.folders-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.folder-item {
+  border-radius: var(--radius-sm);
+  margin-bottom: 2px;
+}
+
+.folder-row {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 13px;
+  transition: all 0.15s ease;
+  user-select: none;
+  /* Improvement for drag drop */
+}
+
+.folder-row:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.folder-item.active .folder-row {
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Folder Content Grid */
+.folder-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  flex: 1;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icons */
+.folder-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.folder-item.active .folder-icon {
+  color: var(--primary);
+  fill: currentColor;
+  /* Filled icon for active state if supported */
+}
+
+/* Hover Actions */
+.folder-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.folder-row:hover .folder-actions {
+  opacity: 1;
+}
+
+.folder-action-btn {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.folder-action-btn:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+/* Badge */
+.folder-badge {
+  font-size: 10px;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* NOTE LIST PRO */
+.notes-list {
+  padding: 0 12px;
+}
+
+.note-item {
+  margin-bottom: 6px;
+}
+
+.note-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* Note Cards - Pro Neutral Override */
+/* Force sidebar items to be neutral regardless of note theme */
+.note-item .note-card {
+  background: transparent !important;
+  /* Override potential theme backgrounds */
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.note-item .note-card:hover {
+  background: var(--surface-2) !important;
+}
+
+.note-item.active .note-card {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.note-item .note-title {
+  color: var(--text) !important;
+}
+
+.note-item.active .note-title {
+  color: var(--primary) !important;
+  /* Use app theme primary */
+}
+
+.note-item .note-preview {
+  color: var(--text-muted) !important;
+}
+
+/* Active indicator strip - Ensure it uses App Primary */
+.note-item.active .note-card::before {
+  background: var(--primary) !important;
+  display: block;
+  /* Show the strip for pro look */
+}
+
+.note-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 4px 0;
+}
+
+.note-item.active .note-title {
+  color: var(--primary-light);
+}
+
+.note-preview {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Tools Section (Tabs) */
+.sidebar-tools {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+  margin-top: auto;
+  /* Push to bottom if space permits, or just sit there */
+}
+
+/* TOOLS SECTION (Tabs) */
+.tools-section {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  /* Ensure it has a background if sticky */
+  flex-shrink: 0;
+}
+
+/* Tabs - Segmented Control Style */
+.tool-tabs {
+  display: flex;
+  background: var(--surface-2);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+}
+
+.tool-tab {
+  flex: 1;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  /* Slightly smaller radius for inner items */
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.tool-tab:hover {
+  color: var(--text);
+}
+
+.tool-tab.active {
+  background: var(--bg);
+  /* White/Bg on active for segmented look */
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Tool Panels */
+.tool-panel {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.tool-panel.active {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* AI Input Area */
+.ai-input-wrapper {
+  position: relative;
+}
+
+.ai-input {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  /* Slightly darker input bg */
+  color: var(--text);
+  resize: vertical;
+  min-height: 60px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.ai-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--bg);
+  box-shadow: 0 0 0 2px var(--primary-glow);
+}
+
+.ai-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Generate Button - Refined */
+#ai-generate-btn,
+#mail-generate-btn {
+  width: 100%;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  /* Use theme primary instead of fixed green */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+#ai-generate-btn:hover,
+#mail-generate-btn:hover {
+  background: var(--primary-strong);
+  transform: translateY(-1px);
+}
+
+#ai-generate-btn:active,
+#mail-generate-btn:active {
+  transform: translateY(0);
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Sidebar Collapse State (Desktop) */
+.layout.sidebar-hidden {
+  --sidebar-width: 60px;
+  /* Update the variable used by grid/layout */
+}
+
+.layout.sidebar-hidden .app-sidebar {
+  width: var(--sidebar-width);
+}
+
+/* Hide text in collapsed state */
+.layout.sidebar-hidden .sidebar-title,
+.layout.sidebar-hidden .user-workspace-name,
+.layout.sidebar-hidden .section-title,
+.layout.sidebar-hidden .library-btn span,
+.layout.sidebar-hidden .folder-btn span,
+.layout.sidebar-hidden .tool-tab,
+.layout.sidebar-hidden .note-item,
+.layout.sidebar-hidden .search-container input,
+.layout.sidebar-hidden .sidebar-sort-wrapper,
+.layout.sidebar-hidden #create-folder {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+  /* simple hide for now */
+}
+
+/* Center icons in collapsed state */
+.layout.sidebar-hidden .library-btn,
+.layout.sidebar-hidden .folder-btn {
+  justify-content: center;
+  padding: 0;
+}
+
+.layout.sidebar-hidden .library-icon,
+.layout.sidebar-hidden .folder-icon {
+  margin: 0;
+}
+
+/* Hide tools content in collapsed state */
+.layout.sidebar-hidden .tools-section {
+  display: none;
+}
+
+/* Adjust header in collapsed state */
+.layout.sidebar-hidden .sidebar-header {
+  padding: 12px 0;
+  justify-content: center;
+}
+
+.layout.sidebar-hidden .sidebar-top-row {
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  gap: 0;
+}
+
+.layout.sidebar-hidden #sidebar-collapse-btn {
+  opacity: 1;
+  margin: 0;
+  width: 32px;
+  height: 32px;
+}
+
+/* Main Content Expansion */
+.layout.sidebar-hidden .editor {
+  /* If editor is flex-1, it should auto-expand. 
+     Just ensuring sidebar-width var is updated or overridden 
+  */
+}
+
+/* Mobile Sidebar Logic */
+@media (max-width: 768px) {
+  .layout {
+    position: relative;
+  }
+
+  .app-sidebar {
+    position: absolute;
+    left: 0;
+    top: 112px;
+    height: calc(100vh - 112px);
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 50;
+  }
+
+  /* In mobile, "sidebar-visible" class toggles visibility */
+  .layout.sidebar-visible .app-sidebar {
+    transform: translateX(0);
+  }
+}
+
 /* ===== Editor ===== */
 .editor {
   border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--border));
   background: radial-gradient(circle at top, color-mix(in srgb, var(--surface) 95%, transparent) 0%, color-mix(in srgb, var(--primary) 8%, var(--surface-2)) 45%, color-mix(in srgb, var(--surface) 98%, transparent) 100%);
-  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;

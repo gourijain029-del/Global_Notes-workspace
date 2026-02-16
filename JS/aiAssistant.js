@@ -2,7 +2,7 @@
 import { generateTextWithGemini } from './geminiAPI.js';
 
 export function wireAIAssistant(state, callbacks) {
-    const generateBtn = document.getElementById("ai-sidebar-generate");
+    const generateBtn = document.getElementById("ai-generate-btn");
     const promptInput = document.getElementById("ai-sidebar-prompt");
     const contentEditor = document.getElementById("content");
 

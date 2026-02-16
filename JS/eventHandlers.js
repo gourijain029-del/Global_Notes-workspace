@@ -232,3 +232,54 @@ export function syncEditorPatternSelector(activeNote) {
 
   patternSelect.value = activeNote.editorPattern || "plain";
 }
+
+// Wires up the new Library Section navigation
+export function wireLibraryNav(state, callbacks) {
+  const navItems = [
+    { id: "nav-all-notes", action: "all" },
+    { id: "nav-recent", action: "recent" },
+    { id: "nav-favorites", action: "favorites" },
+    { id: "nav-trash", action: "trash" }
+  ];
+
+  /* 
+   * Helper to set active visual state. 
+   * In a real app, this might be reactive. Here we manually toggle classes 
+   * or rely on a centralized render. Ideally, callbacks.setActiveLibraryItem(id) would handle it.
+   */
+
+  navItems.forEach(item => {
+    const el = document.getElementById(item.id);
+    if (!el) return;
+
+    el.addEventListener("click", () => {
+      // 1. Visual Update (Immediate)
+      document.querySelectorAll(".library-item").forEach(li => li.classList.remove("active"));
+      el.classList.add("active");
+
+      // 2. Logic Update
+      if (item.action === "all") {
+        callbacks.setActiveFolder(null); // Clear folder filter
+        // Reset sort to default if needed, or keep user preference?
+        // User said: "Clicking All Notes -> shows all notes (clears folder filter)"
+        // We'll also clear any search/date filters if we want a "Reset" feel, but minimally just clear folder.
+      } else if (item.action === "recent") {
+        callbacks.setActiveFolder(null);
+        // Set sort to recent
+        const sortSelect = document.getElementById("sort");
+        if (sortSelect) {
+          sortSelect.value = "updated-desc";
+          sortSelect.dispatchEvent(new Event("change")); // Trigger reload
+        }
+      } else if (item.action === "favorites") {
+        callbacks.setActiveFolder(null);
+        // TODO: Implement Favorites filtering
+        alert("Favorites filter coming soon!");
+      } else if (item.action === "trash") {
+        callbacks.setActiveFolder(null);
+        // TODO: Implement Trash filtering
+        alert("Trash view coming soon!");
+      }
+    });
+  });
+}

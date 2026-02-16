@@ -1,21 +1,69 @@
 export function wireSidebarToggle() {
-    const toggleBtn = document.querySelector("#sidebar-toggle");
+    const collapseBtn = document.querySelector("#sidebar-collapse-btn"); // New ID
+    const mobileToggleBtn = document.querySelector("#sidebar-toggle"); // Keep old ID for mobile header
     const layout = document.querySelector(".layout");
 
-    if (!toggleBtn || !layout) return;
+    if (!layout) return;
 
-    // Check for saved preference
-    const isHidden = localStorage.getItem("notesWorkspace.sidebarHidden") === "true";
-    if (isHidden) {
-        layout.classList.add("sidebar-hidden");
+    // function to toggle
+    const toggleSidebar = () => {
+        layout.classList.toggle("sidebar-hidden");
+        const isHidden = layout.classList.contains("sidebar-hidden");
+        localStorage.setItem("notesWorkspace.sidebarHidden", isHidden);
+    };
+
+    // Desktop Collapse Button
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", toggleSidebar);
     }
 
-    toggleBtn.addEventListener("click", () => {
-        layout.classList.toggle("sidebar-hidden");
+    // Mobile Toggle Button (Navbar) - Handles both Mobile Open and Desktop Collapse
+    if (mobileToggleBtn) {
+        mobileToggleBtn.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+                // Mobile: Toggle Drawer
+                layout.classList.toggle("sidebar-visible");
+            } else {
+                // Desktop: Toggle Collapse
+                layout.classList.toggle("sidebar-hidden");
+                const isHidden = layout.classList.contains("sidebar-hidden");
+                localStorage.setItem("notesWorkspace.sidebarHidden", isHidden);
+            }
+        });
+    }
 
-        // Save preference
-        const isNowHidden = layout.classList.contains("sidebar-hidden");
-        localStorage.setItem("notesWorkspace.sidebarHidden", isNowHidden);
+    // Check for saved preference (Desktop only usually)
+    // If we are on desktop, apply hidden state.
+    if (window.innerWidth > 768) {
+        const isHidden = localStorage.getItem("notesWorkspace.sidebarHidden") === "true";
+        if (isHidden) {
+            layout.classList.add("sidebar-hidden");
+        }
+    }
+}
+
+export function wireToolTabs() {
+    const tabs = document.querySelectorAll(".tool-tab");
+    const panels = document.querySelectorAll(".tool-panel");
+
+    if (!tabs.length || !panels.length) return;
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove("active"));
+            // Add active class to clicked tab
+            tab.classList.add("active");
+
+            // Hide all panels
+            panels.forEach(p => p.classList.remove("active"));
+            // Show target panel
+            const targetId = `tool-panel-${tab.dataset.tab}`;
+            const targetPanel = document.getElementById(targetId);
+            if (targetPanel) {
+                targetPanel.classList.add("active");
+            }
+        });
     });
 }
 

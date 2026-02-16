@@ -8,7 +8,7 @@ export function wireMailFeature() {
     // Retry mechanism to ensure DOM elements are available
     function tryWireMailFeature(retries = 5, delay = 100) {
         // New Sidebar IDs
-        const sendBtn = document.getElementById("sidebar-mail-send");
+        const sendBtn = document.getElementById("mail-generate-btn");
         const senderInput = document.getElementById("sidebar-mail-sender");
         const recipientInput = document.getElementById("sidebar-mail-recipient");
         const promptInput = document.getElementById("sidebar-mail-prompt");

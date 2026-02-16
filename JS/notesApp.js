@@ -2,7 +2,7 @@ import { getActiveUser, setActiveUser, mergeGuestNotes } from "./storage.js";
 import { loadNotesForCurrentUser, ensureAtLeastOneNote, persistNotes } from "./noteManager.js";
 import { getFolders, saveFolders } from "./folderManager.js";
 import { renderNotesList, renderActiveNote, updateUserDisplay, renderFolders } from "./renderer.js";
-import { wireFiltersAndSearch, wireSort, wireTagInput, wireCrudButtons, wireFolderButtons, wireThemeSelector, syncThemeSelector, wireEditorPatternSelector, syncEditorPatternSelector, wireDropdowns } from "./eventHandlers.js";
+import { wireFiltersAndSearch, wireSort, wireTagInput, wireCrudButtons, wireFolderButtons, wireThemeSelector, syncThemeSelector, wireEditorPatternSelector, syncEditorPatternSelector, wireDropdowns, wireLibraryNav } from "./eventHandlers.js";
 import { wireFormattingToolbar } from "./formattingToolbar.js";
 import { wireUploadButtons } from "./mediaManager.js";
 import { wireAuthButtons } from "./authButtons.js";
@@ -10,7 +10,7 @@ import { wireImportExport } from "./exportImport.js";
 import { wireAIAssistant } from './aiAssistant.js';
 import { wireThemeToggle } from "./themeManager.js";
 import { getActiveFilter, getSelectedDate } from "./filterSearchSort.js";
-import { wireSidebarToggle, wireToolbarToggle, wireSidebarResize } from "./layoutManager.js";
+import { wireSidebarToggle, wireToolbarToggle, wireSidebarResize, wireToolTabs } from "./layoutManager.js";
 import { initSmartCalendar } from "./smartCalendar.js";
 import { wireProfileManager, updateHeaderAvatar } from "./profileManager.js";
 import { wireSlashCommands } from "./slashCommands.js";
@@ -52,6 +52,19 @@ const callbacks = {
     state.activeFolderId = folderId;
     callbacks.renderFolders();
     callbacks.renderNotesList();
+    // If a folder is selected, clear Library selection
+    if (folderId) {
+      import("./renderer.js").then(module => {
+        module.updateSidebarSelection(folderId, null);
+      });
+    } else {
+      // If clared (All Notes), highlight All Notes by default?
+      // Or leave it to the specific Library click handler?
+      // Let's default to All Notes if null is passed explicitly (e.g. from folder delete)
+      import("./renderer.js").then(module => {
+        module.updateSidebarSelection(null, 'nav-all-notes');
+      });
+    }
   },
   // Renders the list of notes in the sidebar
   renderNotesList: () => {
@@ -139,6 +152,7 @@ async function initApp() {
   wireSidebarToggle();
   wireToolbarToggle();
   wireSidebarResize();
+  wireToolTabs();
   wireProfileManager(state, callbacks);
   wireSlashCommands();
   wireMailFeature();
@@ -146,7 +160,10 @@ async function initApp() {
   wireShapeManager();
   wireTagManager(state, callbacks);
   wireAutoSave(state, callbacks);
+  wireTagManager(state, callbacks);
+  wireAutoSave(state, callbacks);
   wireDropdowns();
+  wireLibraryNav(state, callbacks); // Wire new Sidebar Library
 
   // Initialize Smart Calendar
   state.calendarWidget = initSmartCalendar(state, callbacks);
