@@ -1,7 +1,7 @@
 import { getActiveUser, setActiveUser, mergeGuestNotes } from "./storage.js";
 import { loadNotesForCurrentUser, ensureAtLeastOneNote, persistNotes } from "./noteManager.js";
 import { getFolders, saveFolders } from "./folderManager.js";
-import { renderNotesList, renderActiveNote, updateUserDisplay, renderFolders } from "./renderer.js";
+import { renderNotesList, renderActiveNote, updateUserDisplay, renderFolders, updateToolbarMetadata } from "./renderer.js";
 import { wireFiltersAndSearch, wireSort, wireTagInput, wireCrudButtons, wireFolderButtons, wireThemeSelector, syncThemeSelector, wireEditorPatternSelector, syncEditorPatternSelector, wireDropdowns, wireLibraryNav } from "./eventHandlers.js";
 import { wireFormattingToolbar } from "./formattingToolbar.js";
 import { wireUploadButtons } from "./mediaManager.js";
@@ -198,11 +198,16 @@ async function initApp() {
   // Live Metadata Update
   const contentInput = document.getElementById("content");
   if (contentInput) {
+    // Utility for debouncing inside this scope
+    let metadataTimeout;
     contentInput.addEventListener("input", () => {
-      const activeNote = state.notes.find(n => n.id === state.activeNoteId);
-      if (activeNote) {
-        import("./renderer.js").then(m => m.updateToolbarMetadata(activeNote, contentInput.innerHTML));
-      }
+      clearTimeout(metadataTimeout);
+      metadataTimeout = setTimeout(() => {
+        const activeNote = state.notes.find(n => n.id === state.activeNoteId);
+        if (activeNote) {
+          updateToolbarMetadata(activeNote, contentInput.innerHTML);
+        }
+      }, 500); // 500ms delay to keep UI responsive
     });
   }
 
@@ -221,6 +226,7 @@ if (window.location.hostname === '0.0.0.0') {
   window.location.hostname = 'localhost';
 }
 
+// Initial App Trigger
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initApp);
 } else {

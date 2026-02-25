@@ -106,12 +106,12 @@ export function wireProfileManager(state, callbacks) {
  * Populates and opens the profile modal
  * @param {string} username 
  */
-function openProfileModal(username) {
+async function openProfileModal(username) {
     if (!username) return;
 
     const modal = document.getElementById("profile-modal");
     const account = getAccountDetails(username);
-    const notes = getNotes(username);
+    const notes = await getNotes(username);
     const stats = calculateStats(notes);
 
     // Set Username & Join Date (mock join date if missing)

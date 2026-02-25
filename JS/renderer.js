@@ -46,7 +46,9 @@ export function renderNotesList(notes, activeNoteId, setActiveNote, activeFolder
     }
 
 
-    const plainContent = (note.content || "").replace(/<[^>]*>/g, "");
+    // Optimization: avoid running expensive regex on massive note content for a tiny preview
+    const rawContent = (note.content || "");
+    const plainContent = (rawContent.length > 500 ? rawContent.slice(0, 500) : rawContent).replace(/<[^>]*>/g, "");
     const previewText =
       plainContent && plainContent.trim().length > 0
         ? plainContent.trim().slice(0, 120) + (plainContent.trim().length > 120 ? "…" : "")
@@ -326,10 +328,11 @@ export function updateToolbarMetadata(note, overrideContent) {
   }
 
   if (metadataCount) {
-    const content = overrideContent !== undefined ? overrideContent : (note.content || "");
-    const text = content.replace(/<[^>]*>/g, " ").trim();
-    const wordCount = text ? text.split(/\s+/).length : 0;
-    const charCount = content.replace(/<[^>]*>/g, "").length;
+    const raw = overrideContent !== undefined ? overrideContent : (note.content || "");
+    // Strip HTML once
+    const text = raw.replace(/<[^>]*>/g, " ");
+    const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const charCount = text.replace(/\s/g, "").length; // use clean text for char count too or similar
     metadataCount.textContent = `${wordCount} words / ${charCount} chars`;
   }
 }

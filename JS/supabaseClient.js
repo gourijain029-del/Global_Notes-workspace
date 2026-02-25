@@ -10,7 +10,7 @@ const { SUPABASE_URL, SUPABASE_ANON_KEY } = config;
 let supabase;
 
 try {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_URL === '' || SUPABASE_ANON_KEY === '') {
         throw new Error("Supabase credentials missing in config.js");
     }
     supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

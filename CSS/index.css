@@ -19,9 +19,13 @@ svg:not([draggable]) {
   -webkit-user-drag: none;
 }
 
-/* Utility Classes */
 .hidden {
   display: none !important;
+}
+
+/* Overlay for mobile sidebar */
+.sidebar-overlay {
+  display: none;
 }
 
 /* Theme: Premium Dark (Default - formerly AMOLED Dark) */

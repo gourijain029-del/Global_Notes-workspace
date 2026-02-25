@@ -92,24 +92,28 @@ export function wireSidebarResize() {
 
     let isResizing = false;
 
+    let layoutRect;
+    let layoutPaddingLeft;
+
     resizer.addEventListener("mousedown", (e) => {
         isResizing = true;
         resizer.classList.add("resizing");
         document.body.style.cursor = "col-resize";
         document.body.style.userSelect = "none"; // Prevent text selection
+
+        layoutRect = layout.getBoundingClientRect();
+        layoutPaddingLeft = parseFloat(getComputedStyle(layout).paddingLeft) || 0;
     });
 
     document.addEventListener("mousemove", (e) => {
         if (!isResizing) return;
 
-        // Calculate new width
-        // The layout has padding, so we might need to adjust or just take the mouse X relative to the layout
-        const layoutRect = layout.getBoundingClientRect();
-        let newWidth = e.clientX - layoutRect.left - parseFloat(getComputedStyle(layout).paddingLeft);
+        // Optimized: Use pre-calculated values
+        let newWidth = e.clientX - layoutRect.left - layoutPaddingLeft;
 
         // Enforce min and max widths
         const minWidth = 240;
-        const maxWidth = 600; // Or a percentage of window width
+        const maxWidth = 550;
 
         if (newWidth < minWidth) newWidth = minWidth;
         if (newWidth > maxWidth) newWidth = maxWidth;

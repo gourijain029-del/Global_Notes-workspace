@@ -31,7 +31,13 @@ export function wireFiltersAndSearch(callbacks) {
   });
 
   const searchInput = $("#search");
-  searchInput?.addEventListener("input", () => callbacks.renderNotesList());
+  let searchTimeout;
+  searchInput?.addEventListener("input", () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      callbacks.renderNotesList();
+    }, 300);
+  });
 
   const dateInput = $("#date-filter");
   dateInput?.addEventListener("change", () => callbacks.renderNotesList());
