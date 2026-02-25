@@ -13,10 +13,14 @@ const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemma-3
  * @returns {Promise<string>} The generated text.
  */
 export async function generateTextWithGemini(prompt) {
-    if (API_KEY === 'YOUR_GEMINI_API_KEY') {
-        // Return a message asking the user to configure the API key.
+    if (!API_KEY || API_KEY === '' || API_KEY === 'YOUR_GEMINI_API_KEY') {
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const message = isLocal
+            ? "Please add GEMINI_API_KEY to your .env file and run 'node generate-config.js'."
+            : "Deployment Error: GEMINI_API_KEY is missing. Please add it to your deployment platform's Environment Variables (e.g., Vercel Dashboard).";
+
         return Promise.resolve(`
-[AI Assistant]: Please configure your Gemini API key in JS/geminiAPI.js to enable this feature.
+[AI Assistant]: ${message}
 You can get a key from Google AI Studio.
 `);
     }
