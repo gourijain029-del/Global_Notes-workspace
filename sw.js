@@ -2,6 +2,8 @@ const CACHE_NAME = 'my-note-app-cache-v10';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/app.html',
+  '/CSS/landing.css',
   '/CSS/index.css',
   '/CSS/signup.css',
   '/CSS/styles.css',

@@ -41,7 +41,7 @@ if (fs.existsSync(envPath)) {
 }
 
 // 3. Copy Static Assets
-const itemsToCopy = ['index.html', 'sw.js', 'manifest.json', 'sitemap.xml', 'robots.txt', 'CSS', 'JS', 'HTML', 'assets', 'vercel.json'];
+const itemsToCopy = ['index.html', 'app.html', 'sw.js', 'manifest.json', 'sitemap.xml', 'robots.txt', 'CSS', 'JS', 'HTML', 'assets', 'vercel.json', 'assets/images/app-mockup.png'];
 itemsToCopy.forEach(item => {
     const src = path.join(__dirname, item);
     const dest = path.join(distDir, item);
