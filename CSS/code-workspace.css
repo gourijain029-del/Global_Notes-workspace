@@ -7,6 +7,20 @@
     --side-nav-width: 300px;
     --editor-font: 'JetBrains Mono', 'Fira Code', monospace;
     --header-blur: 20px;
+    --editor-bg: #282a36;
+    /* Default Dark (Dracula) */
+    --cm-active-line: rgba(255, 255, 255, 0.03);
+    --cm-gutter-border: rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="minimal-white"] {
+    --editor-bg: #ffffff;
+    --cm-active-line: rgba(100, 100, 255, 0.05);
+    --cm-gutter-border: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="nature-green"] {
+    --editor-bg: #1a2a1a;
 }
 
 body.code-workspace-page {
@@ -434,8 +448,7 @@ body.code-workspace-page {
     display: flex;
     flex-direction: column;
     position: relative;
-    background: #282a36;
-    /* Dracula bg default */
+    background: var(--editor-bg);
 }
 
 #editor-target {
@@ -458,7 +471,7 @@ body.code-workspace-page {
 
 .CodeMirror-gutters {
     background: transparent !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-right: 1px solid var(--cm-gutter-border) !important;
 }
 
 .CodeMirror-cursor {
@@ -466,7 +479,7 @@ body.code-workspace-page {
 }
 
 .CodeMirror-activeline-background {
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: var(--cm-active-line) !important;
 }
 
 /* ── AI Result Panel ── */
@@ -676,9 +689,9 @@ body.code-workspace-page {
 
 /* ── Chat Code Blocks ── */
 .code-block-container {
-    background: #1a1a2e;
+    background: var(--surface-2);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border);
     overflow: hidden;
 }
 
@@ -696,7 +709,7 @@ body.code-workspace-page {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     white-space: pre;
-    color: #e6e6ef;
+    color: var(--text);
 }
 
 .chat-copy-btn {

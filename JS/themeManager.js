@@ -52,6 +52,9 @@ export function applyTheme(theme) {
 
   // Synchronize icons for quick-toggle if button exists
   updateQuickToggleState(normalized);
+
+  // Notify listeners that theme has changed
+  window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: normalized } }));
 }
 
 // Updates the visibility of Sun/Moon icons in the quick-toggle button

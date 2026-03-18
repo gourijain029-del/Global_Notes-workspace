@@ -61,6 +61,21 @@ class CodeWorkspace {
         this.initChat();
         this.checkAPIKey();
         this.createNewSnippet();
+
+        // Initial theme apply
+        const currentTheme = localStorage.getItem('global-notes-theme') || 'amoled-dark';
+        this.applyThemeToEditor(currentTheme);
+
+        window.addEventListener('themeChanged', (e) => {
+            this.applyThemeToEditor(e.detail.theme);
+        });
+    }
+
+    applyThemeToEditor(theme) {
+        if (!this.editor) return;
+        const isDark = theme.includes('dark') || theme === 'corporate-gray';
+        const cmTheme = isDark ? 'dracula' : 'eclipse';
+        this.editor.setOption('theme', cmTheme);
     }
 
     checkAPIKey() {
