@@ -5,3 +5,4 @@ JS/config.js
 node_modules
 dist
 public
+.DS_Store

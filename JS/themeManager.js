@@ -37,6 +37,7 @@ export function applyTheme(theme) {
   if (selector) {
     selector.value = normalized;
   }
+
   // Handle visibility of the 'Note Card Theme' selector (only relevant for light themes)
   const noteThemeSelect = document.querySelector("#note-theme");
   if (noteThemeSelect) {
@@ -47,6 +48,28 @@ export function applyTheme(theme) {
     if (target) {
       target.classList.toggle("hidden", isDark);
     }
+  }
+
+  // Synchronize icons for quick-toggle if button exists
+  updateQuickToggleState(normalized);
+}
+
+// Updates the visibility of Sun/Moon icons in the quick-toggle button
+function updateQuickToggleState(theme) {
+  const sunIcon = document.querySelector(".theme-icon-sun");
+  const moonIcon = document.querySelector(".theme-icon-moon");
+
+  if (!sunIcon || !moonIcon) return;
+
+  // If currently dark, show Sun to switch to light. If currently light, show Moon for dark.
+  const isDark = theme.includes("dark") || theme === "corporate-gray";
+
+  if (isDark) {
+    sunIcon.classList.remove("hidden");
+    moonIcon.classList.add("hidden");
+  } else {
+    sunIcon.classList.add("hidden");
+    moonIcon.classList.remove("hidden");
   }
 }
 
@@ -77,13 +100,11 @@ export function wireThemeToggle() {
     });
   }
 
-  // 3. Handle Custom Buttons
+  // 3. Handle Custom Buttons (Dropdown options)
   const themeButtons = document.querySelectorAll(".theme-option");
   themeButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      e.stopPropagation(); // prevent closing dropdown if we want, or let it close?
-      // Usually users might want to see the change immediately.
-      // But let's keep dropdown open to allow switching back if they don't like it.
+      e.stopPropagation();
       const val = btn.dataset.value;
       if (val) {
         persistTheme(val);
@@ -93,8 +114,24 @@ export function wireThemeToggle() {
     });
   });
 
+  // 4. Handle Quick Toggle Button (Navbar)
+  const quickToggle = document.querySelector("#theme-quick-toggle");
+  if (quickToggle) {
+    quickToggle.addEventListener("click", () => {
+      const current = getStoredTheme();
+      // Decide toggle target: if currently dark, go to a white theme; otherwise go to dark.
+      const isDark = current.includes("dark") || current === "corporate-gray";
+      const target = isDark ? "minimal-white" : "amoled-dark";
+
+      persistTheme(target);
+      updateButtonState(target);
+      if (selector) selector.value = target;
+    });
+  }
+
   // Initial button state
   updateButtonState(currentTheme);
+  updateQuickToggleState(currentTheme);
 
   function updateButtonState(activeTheme) {
     themeButtons.forEach(btn => {
