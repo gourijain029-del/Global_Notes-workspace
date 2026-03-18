@@ -1,6 +1,7 @@
 import config from './config.js';
 import { generateTextWithGemini } from './geminiAPI.js';
-import { wireThemeToggle } from './themeManager.js';
+import { wireThemeToggle, setThemeStorageKey } from './themeManager.js';
+import { CODE_THEME_KEY } from './constants.js';
 
 const STORAGE_KEY = 'antigravity_snippets';
 
@@ -53,6 +54,7 @@ class CodeWorkspace {
     }
 
     init() {
+        setThemeStorageKey(CODE_THEME_KEY);
         wireThemeToggle();
         this.initEditor();
         this.renderSnippetList();
@@ -63,7 +65,7 @@ class CodeWorkspace {
         this.createNewSnippet();
 
         // Initial theme apply
-        const currentTheme = localStorage.getItem('global-notes-theme') || 'amoled-dark';
+        const currentTheme = localStorage.getItem(CODE_THEME_KEY) || 'amoled-dark';
         this.applyThemeToEditor(currentTheme);
 
         window.addEventListener('themeChanged', (e) => {

@@ -3,10 +3,17 @@ import { THEME_KEY } from "./constants.js";
 const DEFAULT_THEME = "amoled-dark";
 const VALID_THEMES = ["amoled-dark", "nature-green", "corporate-gray", "minimal-white"];
 
+let currentStorageKey = THEME_KEY; // Default to Notes Workspace theme key
+
+// Overrides the storage key to use for following operations (e.g., Code Workspace)
+export function setThemeStorageKey(key) {
+  currentStorageKey = key;
+}
+
 // Retrieves the user's preferred theme from localStorage or returns the default AMOLED dark theme
 export function getStoredTheme() {
   try {
-    const stored = localStorage.getItem(THEME_KEY);
+    const stored = localStorage.getItem(currentStorageKey);
     return VALID_THEMES.includes(stored) ? stored : DEFAULT_THEME;
   } catch {
     return DEFAULT_THEME;
@@ -79,7 +86,7 @@ function updateQuickToggleState(theme) {
 // Saves the user's theme preference to localStorage and applies it
 export function persistTheme(theme) {
   try {
-    localStorage.setItem(THEME_KEY, theme);
+    localStorage.setItem(currentStorageKey, theme);
   } catch {
     // ignore storage issues
   }
